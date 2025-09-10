@@ -971,8 +971,25 @@
             
             // Notification Bell Demo
             document.querySelector('.header-notifications').addEventListener('click', () => {
-                alert('8 New Notifications:\n- 3 new user registrations\n- 2 upcoming batch starts\n- 1 system update pending\n- 2 assignments due for grading');
+                showNotification('8 New Notifications:\n- 3 new user registrations\n- 2 upcoming batch starts\n- 1 system update pending\n- 2 assignments due for grading', 'info');
             });
+
+            // Logout functionality
+            document.querySelector('[data-page="logout"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    sessionStorage.removeItem('user');
+                    window.location.href = '/index.html';
+                }
+            });
+        }
+
+        // Global functions for window scope
+        window.approveUser = approveUser;
+        window.rejectUser = rejectUser;
+        window.toggleUserStatus = toggleUserStatus;
+        window.viewUser = viewUser;
+        window.editUser = editUser;
         });
     </script>
 </body>
