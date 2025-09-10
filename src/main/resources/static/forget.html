@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1100px;
+        }
+        
+        /* Left section */
+        .left {
+            flex: 1;
+            padding: 60px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items:center;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            margin-right: 8px;
+        }
+        
+        .logo-text {
+            font-size: 30px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .tagline {
+            margin-top: 80px;
+        }
+        
+        h1 {
+            color: #4285f4;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .tagline p {
+            color: #666;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+        
+        .indicators {
+            display: flex;
+            margin-top: 100px;
+        }
+        
+        .indicator {
+            width: 40px;
+            height: 4px;
+            background: #e0e0e0;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        
+        .indicator.active {
+            background: #4285f4;
+        }
+        
+        /* Right section */
+        .right {
+            flex: 1;
+            display:flexbox;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .form-container {
+            height: 500px;
+            width: 380px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 40px;
+            border: 1px solid #dbe3ff;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #4cd964;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left, .right {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left side -->
+        <div class="left">
+            <div class="logo-container">
+                <img src="logo.png" alt="Tracker Pro Logo" class="logo">
+                <div class="logo-text">Tracker Pro</div>
+            </div>
+            
+            <div class="tagline">
+                <h1>Tracking the Future...</h1>
+                <p>No more manual tracking or scattered data. Organize, monitor, and share student performance in one streamlined platform—quickly</p>
+            </div>
+            
+            <div class="indicators">
+                <div class="indicator"></div>
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+        
+        <!-- Right side -->
+        <div class="right">
+            <div class="form-container">
+                <h2>Forgot Password</h2>
+                <p class="subtitle">Don't worry! It occurs. Please enter the email or Mobile no. linked with your account.</p>
+                
+                <form>
+                    <input type="text" placeholder="Enter mail or Mobile No.">
+                    <button type="submit">Continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

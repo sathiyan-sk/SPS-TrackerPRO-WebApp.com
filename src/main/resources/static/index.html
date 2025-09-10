@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TackerPro | Login</title>
+    <style>
+        /* === RESET & BASE STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc8 50%, #f8bbd9 100%);
+            position: relative;
+        }
+
+        /* === BACKGROUND PATTERN === */
+        .bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('bg-curves.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+        }
+
+        /* === HEADER SECTION === */
+        header {
+            width: 100%;
+            border-bottom: 4px solid #ffffff;
+            position: sticky;
+            top: 0;
+            padding: 1px;
+            z-index: 100;
+        }
+
+        .header-banner {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* === MAIN CONTENT === */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: #f8f9fa;
+        }
+
+        /* === LOGIN CONTAINER === */
+        .login-container {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow:none;
+            overflow: hidden;
+        }
+
+        /* === LOGIN HEADER === */
+        .login-header {
+            text-align: center;
+            padding: 30px 30px 0 30px;
+        }
+
+        .login-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        /* === TAB NAVIGATION (UPDATED STYLE) === */
+        .tab-container {
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 0;
+            background: #f8f9fa;
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color:black;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tab-button.active {
+            background: #ffde59;
+            color: black;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .tab-button:hover:not(.active) {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .tab-button:active {
+            transform: translateY(0);
+        }
+
+        /* === FORM CONTAINER === */
+        .form-container {
+            padding: 0 30px 30px 30px;
+        }
+
+        .form-panel {
+            display: none;
+        }
+
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        /* === FORM ELEMENTS === */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* === PASSWORD INPUT === */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #6b7280;
+            padding: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: #0ea5e9;
+        }
+
+        /* === ERROR MESSAGES === */
+        .error-message {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #ef4444;
+        }
+
+        .error-icon {
+            width: 14px;
+            height: 14px;
+            border: 1px solid #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #ef4444;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* === FORM ACTIONS === */
+        .form-actions {
+            margin-bottom: 25px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: #0ea5e9;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+            color: #0284c7;
+        }
+
+        .forgot-right {
+            text-align: right;
+        }
+
+        /* === LOGIN BUTTONS === */
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .login-button:hover {
+            background: #0284c7;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        /* === FOOTER LINKS === */
+        .auth-footer {
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .auth-footer a {
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+            color: #0284c7;
+        }
+
+        /* === BOTTOM FOOTER === */
+        .bottom-footer {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            margin-top: auto;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 768px) {
+            .bg {
+                width: 70%;
+                opacity: 0.2;
+            }
+            
+            .login-container {
+                margin: 0 10px;
+                max-width: calc(100% - 20px);
+            }
+            
+            .form-container,
+            .login-header,
+            .tab-container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .tab-button {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+
+            .tab-navigation {
+                gap: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 20px 10px;
+            }
+
+            .login-title {
+                font-size: 1.4rem;
+            }
+
+            .tab-button {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <img src="banner.png" alt="Tracker PRO Banner" class="header-banner" />
+    </header>
+    
+    <!-- Background pattern -->
+    <div class="bg-curves.png"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="login-container">
+            <!-- Login Header -->
+            <div class="login-header">
+                <h2 class="login-title">Login Portal</h2>
+                <p class="login-subtitle">Have A Nice Day With You <span>👋</span></p>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <div class="tab-navigation">
+                    <button class="tab-button active" data-tab="student">Student Login</button>
+                    <button class="tab-button" data-tab="employer">Employer / Users</button>
+                </div>
+            </div>  
+            
+            <!-- Form Container -->
+            <div class="form-container">
+                <!-- Student Form -->
+                <div class="form-panel active" id="student-panel">
+                    <form id="student-form">
+                        <div class="form-group">
+                            <label class="form-label" for="student-email">Email</label>
+                            <input 
+                                type="email" 
+                                id="student-email" 
+                                class="form-input error"
+                                placeholder="Enter your email id"
+                                required
+                            >
+                            <div class="error-message">
+                                <span class="error-icon">!</span>
+                                This field is required
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="student-password">Password</label>
+                            <div class="password-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="student-password" 
+                                    class="form-input error"
+                                    placeholder="Must be atleast 6 characters"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword('student-password')">
+                                    👁️
+                                </button>
+                            </div>
+                            <div class="error-message">
+                                <span class="error-icon">!</span>
+                                This field is required
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <div class="forgot-right">
+                                <a href="forget.html" class="forgot-link">Forgot password?</a>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="login-button">Login</button>
+                        
+                        <div class="auth-footer">
+                            New Student..? Here You <a href="Registration.html">Register as Student</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Employer Form -->
+                <div class="form-panel" id="employer-panel">
+                    <form id="employer-form">
+                        <div class="form-group">
+                            <label class="form-label" for="employer-email">Email</label>
+                            <input 
+                                type="email" 
+                                id="employer-email" 
+                                class="form-input"
+                                placeholder="name@company.com"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="employer-password">Password</label>
+                            <div class="password-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="employer-password" 
+                                    class="form-input"
+                                    placeholder="••••••••"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword('employer-password')">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-row">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="remember-me" class="checkbox-input">
+                                <label for="remember-me" class="checkbox-label">Remember me</label>
+                            </div>
+                            <a href="forget.html" class="forgot-link">Forgot Password?</a>
+                        </div>
+                        
+                        <button type="submit" class="login-button">Login</button>
+                        
+                        <div class="auth-footer">
+                            Don't have an account? <a href="Registration.html">Sign up</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="bottom-footer">
+        <div class="copyright">
+            © 2025 Tracker PRO. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        // === CONFIGURATION ===
+        const CONFIG = {
+            activeClass: 'active',
+            errorClass: 'error',
+            animationDuration: 300
+        };
+
+        // === TAB MANAGEMENT ===
+        class TabManager {
+            constructor() {
+                this.tabButtons = document.querySelectorAll('.tab-button');
+                this.formPanels = document.querySelectorAll('.form-panel');
+                this.init();
+            }
+
+            init() {
+                this.tabButtons.forEach(button => {
+                    button.addEventListener('click', (e) => this.handleTabClick(e));
+                });
+            }
+
+            handleTabClick(event) {
+                const targetTab = event.target.getAttribute('data-tab');
+                this.switchTab(targetTab);
+            }
+
+            switchTab(targetTab) {
+                // Remove active from all tabs and panels
+                this.tabButtons.forEach(btn => btn.classList.remove(CONFIG.activeClass));
+                this.formPanels.forEach(panel => panel.classList.remove(CONFIG.activeClass));
+                
+                // Add active to clicked tab and corresponding panel
+                const activeButton = document.querySelector(`[data-tab="${targetTab}"]`);
+                const activePanel = document.getElementById(`${targetTab}-panel`);
+                
+                if (activeButton && activePanel) {
+                    activeButton.classList.add(CONFIG.activeClass);
+                    activePanel.classList.add(CONFIG.activeClass);
+                }
+            }
+        }
+
+        // === PASSWORD UTILITY ===
+        class PasswordToggle {
+            static toggle(inputId) {
+                const input = document.getElementById(inputId);
+                const toggle = input.nextElementSibling;
+                
+                if (input && toggle) {
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+                    toggle.textContent = isPassword ? '🙈' : '👁️';
+                }
+            }
+        }
+
+        // === FORM VALIDATION ===
+        class FormValidator {
+            constructor() {
+                this.forms = document.querySelectorAll('form');
+                this.init();
+            }
+
+            init() {
+                this.forms.forEach(form => {
+                    form.addEventListener('submit', (e) => this.handleSubmit(e));
+                });
+                this.initErrorRemoval();
+            }
+
+            handleSubmit(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+                
+                console.log('Form submitted:', data);
+                this.showNotification('Login form submitted!', 'success');
+            }
+
+            initErrorRemoval() {
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.addEventListener('focus', () => this.removeError(input));
+                });
+            }
+
+            removeError(input) {
+                input.classList.remove(CONFIG.errorClass);
+                const errorMsg = input.parentElement.querySelector('.error-message');
+                if (errorMsg) {
+                    errorMsg.style.display = 'none';
+                }
+            }
+
+            showNotification(message, type = 'success') {
+                console.log(`${type.toUpperCase()}: ${message}`);
+                alert(message); // Replace with toast notification in production
+            }
+
+            static validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+        }
+
+        // === GLOBAL FUNCTIONS (for HTML onclick) ===
+        function togglePassword(inputId) {
+            PasswordToggle.toggle(inputId);
+        }
+
+        // === INITIALIZATION ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize components
+            new TabManager();
+            new FormValidator();
+            
+            console.log('TackerPro login system initialized successfully');
+        });
+
+        // === UTILITY FUNCTIONS ===
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html>
