@@ -606,14 +606,61 @@
                 this.initErrorRemoval();
             }
 
-            handleSubmit(event) {
+            async handleSubmit(event) {
                 event.preventDefault();
                 
-                const formData = new FormData(event.target);
-                const data = Object.fromEntries(formData);
+                const form = event.target;
+                const formData = new FormData(form);
                 
-                console.log('Form submitted:', data);
-                this.showNotification('Login form submitted!', 'success');
+                // Get form fields based on which form was submitted
+                let email, password;
+                if (form.id === 'student-form') {
+                    email = document.getElementById('student-email').value;
+                    password = document.getElementById('student-password').value;
+                } else {
+                    email = document.getElementById('employer-email').value;
+                    password = document.getElementById('employer-password').value;
+                }
+                
+                const loginData = {
+                    email: email,
+                    password: password,
+                    rememberMe: form.id === 'employer-form' ? document.getElementById('remember-me').checked : false
+                };
+
+                try {
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(loginData)
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.showNotification('Login successful! Redirecting...', 'success');
+                        // Store user info in sessionStorage
+                        sessionStorage.setItem('user', JSON.stringify(result.user));
+                        
+                        // Redirect based on role
+                        setTimeout(() => {
+                            if (result.user.role === 'ADMIN') {
+                                window.location.href = '/adminDashboard.html';
+                            } else {
+                                // For now, redirect to admin dashboard for all users
+                                // In future, you can create separate dashboards for each role
+                                window.location.href = '/adminDashboard.html';
+                            }
+                        }, 1500);
+                    } else {
+                        this.showNotification(result.message || 'Login failed!', 'error');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.showNotification('Network error. Please try again.', 'error');
+                }
             }
 
             initErrorRemoval() {
