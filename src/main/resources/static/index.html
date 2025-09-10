@@ -679,7 +679,32 @@
 
             showNotification(message, type = 'success') {
                 console.log(`${type.toUpperCase()}: ${message}`);
-                alert(message); // Replace with toast notification in production
+                
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    border-radius: 5px;
+                    color: white;
+                    font-weight: 500;
+                    z-index: 10000;
+                    max-width: 300px;
+                    word-wrap: break-word;
+                    ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Remove notification after 5 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 5000);
             }
 
             static validateEmail(email) {
