@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Register | Tracker Pro</title>
+  <style>
+    :root {
+      --primary-color: #ffcc00;
+      --text-color: #333;
+      --border-color: #ddd;
+      --bg-color: #fff;
+      --shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f5f6fa;
+    }
+
+    .register-container {
+      display: flex;
+      width: 100%;
+      max-width: 1000px;
+      background: var(--bg-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Left Form Section */
+    .register-form-section {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .form-title {
+      margin-bottom: 25px;
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: var(--text-color);
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      background: white;
+    }
+
+    .form-group-full {
+      grid-column: span 2;
+    }
+
+    .signup-button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-color);
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background 0.3s ease;
+    }
+
+    .signup-button:hover {
+      background: #ffdb4d;
+    }
+
+    /* Error styling */
+    .form-group.error input,
+    .form-group.error select {
+      border-color: #e74c3c;
+    }
+
+    .error-message {
+      font-size: 12px;
+      color: #e74c3c;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+    /* Right Illustration Section */
+    .illustration-section {
+      flex: 1;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .illustration-section img {
+      max-width: 90%;
+      height: auto;
+    }
+
+    @media(max-width: 768px) {
+      .register-container {
+        flex-direction: column;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group-full {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    
+    <!-- Left Section: Form -->
+    <div class="register-form-section">
+      <div class="logo-section">
+        <img src="logo.png" alt="Tracker Pro Logo" class="logo-icon">
+        <span class="logo-text">Tracker Pro</span>
+      </div>
+
+      <h2 class="form-title">Create your account</h2>
+
+      <form id="registrationForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="firstName">First Name :</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+            <div class="error-message">Please enter a valid first name</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="roleCategory">Role Category:</label>
+            <select id="roleCategory" name="roleCategory" required>
+              <option value="">Select Role</option>
+              <option value="HR">HR</option>
+              <option value="Faculty">Faculty</option>
+              <option value="Admin">Student</option>
+            </select>
+            <div class="error-message">Please select a role</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+            <div class="error-message">Please enter a valid last name</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password :</label>
+            <input type="password" id="password" name="password" placeholder="xxxxxxxxxx" required>
+            <div class="error-message">Password must be at least 6 characters</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="mobileNo">Mobile No. :</label>
+            <input type="text" id="mobileNo" name="mobileNo" placeholder="Enter only 10 digits" required>
+            <div class="error-message">Please enter a valid 10-digit mobile number</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password :</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="xxxxxxxxxx" required>
+            <div class="error-message">Passwords do not match</div>
+          </div>
+          
+          <!-- Full width Email Field -->
+          <div class="form-group form-group-full">
+            <label for="email">Your Email :</label>
+            <input type="email" id="email" name="email" placeholder="youremail@name.com" required>
+            <div class="error-message">Please enter a valid email address</div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="signup-button" id="submitBtn">
+          Register
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Section: Illustration -->
+    <div class="illustration-section">
+      <img src="illustration.png" alt="Illustration">
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Clear previous errors
+      const errorGroups = document.querySelectorAll('.form-group.error');
+      errorGroups.forEach(group => group.classList.remove('error'));
+      
+      let isValid = true;
+      
+      // Validate First Name
+      const firstName = document.getElementById('firstName');
+      if (!firstName.value.trim() || firstName.value.trim().length < 2) {
+        showError(firstName, 'Please enter a valid first name');
+        isValid = false;
+      }
+      
+      // Validate Role Category
+      const roleCategory = document.getElementById('roleCategory');
+      if (!roleCategory.value) {
+        showError(roleCategory, 'Please select a role');
+        isValid = false;
+      }
+      
+      // Validate Password
+      const password = document.getElementById('password');
+      if (!password.value || password.value.length < 6) {
+        showError(password, 'Password must be at least 6 characters');
+        isValid = false;
+      }
+      
+      // Validate Mobile Number
+      const mobileNo = document.getElementById('mobileNo');
+      const mobilePattern = /^[0-9]{10}$/;
+      if (!mobilePattern.test(mobileNo.value)) {
+        showError(mobileNo, 'Please enter a valid 10-digit mobile number');
+        isValid = false;
+      }
+      
+      // Validate Confirm Password
+      const confirmPassword = document.getElementById('confirmPassword');
+      if (confirmPassword.value !== password.value) {
+        showError(confirmPassword, 'Passwords do not match');
+        isValid = false;
+      }
+      
+      // Validate Email
+      const email = document.getElementById('email');
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email.value)) {
+        showError(email, 'Please enter a valid email address');
+        isValid = false;
+      }
+      
+      // If all validations pass, redirect to success page
+      if (isValid) {
+        window.location.href = 'success.html';
+      }
+    });
+    
+    function showError(field, message) {
+      const formGroup = field.closest('.form-group');
+      formGroup.classList.add('error');
+      const errorMessage = formGroup.querySelector('.error-message');
+      errorMessage.textContent = message;
+    }
+    
+    // Format mobile number input to only allow numbers
+    document.getElementById('mobileNo').addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
+  </script>
+</body>
+</html>

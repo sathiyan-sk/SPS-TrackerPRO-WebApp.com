@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackerPro - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES FOR EASY THEMING
+           ========================================================================== */
+        :root {
+            --primary-color: #4a6fff;
+            --primary-light: #e5eaff;
+            --primary-dark: #3a5ccc;
+            --secondary-color: #ff7e42;
+            --text-color: #333333;
+            --text-light: #666666;
+            --light-color: #f8f9fc;
+            --gray-color: #dfe2e9;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --transition: all 0.3s ease;
+            --header-height: 70px;
+            --sidebar-width: 250px;
+        }
+
+        /* ==========================================================================
+           2. GENERAL & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           3. HEADER BAR
+           ========================================================================== */
+        .header-bar {
+            background-color: var(--white);
+            height: var(--header-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 38px;
+            margin-right: 12px;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color:black;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-search {
+            position: relative;
+            width: 300px;
+        }
+
+        .header-search input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--gray-color);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .header-search input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        .header-search::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .header-notifications {
+            position: relative;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-color);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .header-notifications:hover {
+            background-color: var(--primary-light);
+        }
+
+        .header-notifications::after {
+            content: '8';
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+
+        .user-details .user-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+
+        .user-details .user-role {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* ==========================================================================
+           4. LAYOUT & SIDEBAR
+           ========================================================================== */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            padding-top: var(--header-height);
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--white);
+            height: calc(100vh - var(--header-height));
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            overflow-y: auto;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            z-index: 90;
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            transition: var(--transition);
+            position: relative;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: var(--light-color);
+        }
+
+        .sidebar-menu li.active a {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .sidebar-menu li.active a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--primary-color);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sidebar-menu li .icon {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .menu-category {
+            padding: 1rem 1.5rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .menu-item .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           5. MAIN CONTENT & PAGES
+           ========================================================================== */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        .page-title {
+            margin-bottom: 2rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+        
+        /* DASHBOARD STATS CARDS */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.primary::before { background-color: var(--primary-color); }
+        .stat-card.secondary::before { background-color: var(--secondary-color); }
+        .stat-card.success::before { background-color: var(--success-color); }
+        .stat-card.warning::before { background-color: var(--warning-color); }
+
+        .stat-card .stat-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            opacity: 0.1;
+        }
+
+        .stat-card .stat-title {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card .stat-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: auto;
+        }
+
+        /* ==========================================================================
+           6. SHARED COMPONENTS (Tables, Modals, Buttons, Forms, etc.)
+           ========================================================================== */
+        .content-area {
+            background-color: var(--white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-area h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--gray-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-color);
+            vertical-align: middle;
+        }
+
+        .data-table th {
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--light-color);
+        }
+        
+        .badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-success { background-color: rgba(46, 204, 113, 0.1); color: var(--success-color); }
+        .badge-warning { background-color: rgba(241, 196, 15, 0.1); color: var(--warning-color); }
+        .badge-danger { background-color: rgba(231, 76, 60, 0.1); color: var(--danger-color); }
+        .badge-primary { background-color: var(--primary-light); color: var(--primary-color); }
+        
+        .actions { display: flex; gap: 0.5rem; }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.75rem; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-success { background-color: var(--success-color); color: white; }
+        .btn-danger { background-color: var(--danger-color); color: white; }
+        .btn-outline { background-color: var(--white); border: 1px solid var(--gray-color); color: var(--text-color); }
+        .btn-outline:hover { background-color: var(--light-color); }
+        
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .form-control {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.875rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-light); }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background-color: var(--white); border-radius: var(--border-radius-md); max-width: 500px;
+            width: 100%; padding: 2rem; box-shadow: var(--shadow-md); position: relative;
+            max-height: calc(100vh - 100px); overflow-y: auto;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--gray-color); }
+        .modal-header h3 { margin: 0; font-weight: 600; font-size: 1.2rem; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        .modal-body { margin-bottom: 1.5rem; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-color); }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.875rem; }
+        .form-control { width: 100%; }
+        select.form-control {
+            appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem;
+        }
+        textarea.form-control { min-height: 100px; resize: vertical; }
+
+        .tab-navigation {
+            display: flex; list-style: none; padding: 0; margin: 0 0 1rem 0; border-bottom: 1px solid var(--gray-color);
+        }
+        .tab-navigation li { padding: 0.75rem 1.25rem; cursor: pointer; position: relative; transition: var(--transition); }
+        .tab-navigation li.active { color: var(--primary-color); font-weight: 500; }
+        .tab-navigation li.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px;
+            background-color: var(--primary-color);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER BAR -->
+    <header class="header-bar">
+        <div class="logo-container">
+            <img src="logo.png" alt="TrackerPro Logo" class="logo">
+            <h1 class="logo-text">TrackerPro</h1>
+        </div>
+        <div class="header-actions">
+            <div class="header-search"><input type="text" placeholder="Search..."></div>
+            <div class="header-notifications" title="Notifications">🔔</div>
+            <div class="user-profile" title="Admin Profile">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="active"><a href="#" data-page="dashboard"><span class="icon">📊</span><span>Dashboard</span></a></li>
+                <li><a href="#" data-page="users" class="menu-item"><div><span class="icon">👥</span><span>User Management</span></div><span class="badge">8</span></a></li>
+                <div class="menu-category">Education</div>
+                <li><a href="#" data-page="courses"><span class="icon">📚</span><span>Course Management</span></a></li>
+                <li><a href="#" data-page="batches"><span class="icon">🗂️</span><span>Batch Management</span></a></li>
+                <div class="menu-category">Settings</div>
+                <li><a href="#" data-page="settings"><span class="icon">⚙️</span><span>System Settings</span></a></li>
+                <li><a href="#" data-page="logout"><span class="icon">🚪</span><span>Logout</span></a></li>
+            </ul>
+        </aside>
+        
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            <!-- DASHBOARD PAGE -->
+            <section id="dashboard-page" class="page active-page">
+                <h1 class="page-title">Admin Workplace</h1>
+                <div class="dashboard-stats">
+                    <div class="stat-card primary"><div class="stat-icon">🧑‍🎓</div><div class="stat-title">Total Students</div><div class="stat-value">250</div><div class="stat-description">15 new registrations this week</div></div>
+                    <div class="stat-card secondary"><div class="stat-icon">👨‍🏫</div><div class="stat-title">Faculty Members</div><div class="stat-value">42</div><div class="stat-description">3 new this month</div></div>
+                    <div class="stat-card success"><div class="stat-icon">📚</div><div class="stat-title">Active Batches</div><div class="stat-value">15</div><div class="stat-description">2 starting next week</div></div>
+                    <div class="stat-card warning"><div class="stat-icon">⏳</div><div class="stat-title">Pending Requests</div><div class="stat-value">8</div><div class="stat-description">Require your attention</div></div>
+                </div>
+                <div class="content-area">
+                    <h2>New Registration Requests</h2>
+                    <table class="data-table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Registered On</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>John Smith</td><td>john.s@example.com</td><td><span class="badge badge-primary">Student</span></td><td>2023-10-26</td><td class="actions"><button class="btn btn-sm btn-success">Approve</button><button class="btn btn-sm btn-danger">Reject</button><button class="btn btn-sm btn-outline open-modal" data-modal="viewUserModal">View</button></td></tr>
+                            <tr><td>Sarah Johnson</td><td>sarah.j@example.com</td><td><span class="badge badge-primary">Faculty</span></td><td>2023-10-25</td><td class="actions"><button class="btn btn-sm btn-success">Approve</button><button class="btn btn-sm btn-danger">Reject</button><button class="btn btn-sm btn-outline open-modal" data-modal="viewUserModal">View</button></td></tr>
+                            <tr><td>Mike Williams</td><td>mike.w@example.com</td><td><span class="badge badge-primary">HR</span></td><td>2023-10-24</td><td class="actions"><button class="btn btn-sm btn-success">Approve</button><button class="btn btn-sm btn-danger">Reject</button><button class="btn btn-sm btn-outline open-modal" data-modal="viewUserModal">View</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- USER MANAGEMENT PAGE -->
+            <section id="users-page" class="page">
+                <h1 class="page-title">User Management</h1>
+                <div class="content-area">
+                    <div class="table-actions"><button class="btn btn-primary open-modal" data-modal="addUserModal">Add New User</button></div>
+                    <ul class="tab-navigation"><li class="active" data-tab="all-users">All Users</li><li data-tab="students">Students</li><li data-tab="faculty">Faculty</li><li data-tab="hr">HR Staff</li></ul>
+                    <div id="all-users-tab" class="tab-content active"><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr><td>John Smith</td><td>john.s@example.com</td><td><span class="badge badge-primary">Student</span></td><td><span class="badge badge-success">Active</span></td><td class="actions"><button class="btn btn-sm btn-outline open-modal" data-modal="editUserModal">Edit</button><button class="btn btn-sm btn-danger">Disable</button></td></tr><tr><td>Sarah Johnson</td><td>sarah.j@example.com</td><td><span class="badge badge-primary">Faculty</span></td><td><span class="badge badge-success">Active</span></td><td class="actions"><button class="btn btn-sm btn-outline open-modal" data-modal="editUserModal">Edit</button><button class="btn btn-sm btn-danger">Disable</button></td></tr></tbody></table></div>
+                    <div id="students-tab" class="tab-content"><p>Table with only student users will be displayed here.</p></div>
+                    <div id="faculty-tab" class="tab-content"><p>Table with only faculty users will be displayed here.</p></div>
+                    <div id="hr-tab" class="tab-content"><p>Table with only HR users will be displayed here.</p></div>
+                </div>
+            </section>
+            
+            <!-- COURSE MANAGEMENT PAGE -->
+            <section id="courses-page" class="page">
+                <h1 class="page-title">Course Management</h1>
+                <div class="content-area">
+                    <div class="table-actions"><button class="btn btn-primary open-modal" data-modal="addCourseModal">Create New Course</button></div>
+                    <table class="data-table"><thead><tr><th>Course Code</th><th>Title</th><th>Duration</th><th>Status</th><th>Batches</th><th>Actions</th></tr></thead><tbody><tr><td>FSD-001</td><td>Full-Stack Development</td><td>6 months</td><td><span class="badge badge-success">Active</span></td><td>3</td><td class="actions"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline open-modal" data-modal="addBatchModal">Add Batch</button></td></tr><tr><td>DS-002</td><td>Data Science</td><td>8 months</td><td><span class="badge badge-success">Active</span></td><td>2</td><td class="actions"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline open-modal" data-modal="addBatchModal">Add Batch</button></td></tr></tbody></table>
+                </div>
+            </section>
+            
+            <!-- BATCH MANAGEMENT PAGE -->
+            <section id="batches-page" class="page">
+                <h1 class="page-title">Batch Management</h1>
+                <div class="content-area">
+                    <div class="table-actions"><button class="btn btn-primary open-modal" data-modal="addBatchModal">Create New Batch</button></div>
+                    <table class="data-table"><thead><tr><th>Batch Code</th><th>Course</th><th>Start Date</th><th>Students</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr><td>FSB-001</td><td>Full-Stack Development</td><td>2023-07-01</td><td>28/30</td><td><span class="badge badge-success">Ongoing</span></td><td class="actions"><button class="btn btn-sm btn-outline">View Details</button><button class="btn btn-sm btn-outline">Edit</button></td></tr><tr><td>DSB-001</td><td>Data Science</td><td>2023-06-01</td><td>25/25</td><td><span class="badge badge-success">Ongoing</span></td><td class="actions"><button class="btn btn-sm btn-outline">View Details</button><button class="btn btn-sm btn-outline">Edit</button></td></tr></tbody></table>
+                </div>
+            </section>
+
+            <!-- SETTINGS PAGE (Placeholder) -->
+            <section id="settings-page" class="page"><h1 class="page-title">Account Settings</h1><div class="content-area"><h2>Maintanace</h2><p>System settings form will go here.</p></div></section>
+        </main>
+    </div>
+    
+    <!-- MODALS -->
+    <div class="modal" id="viewUserModal"><div class="modal-content"><div class="modal-header"><h3>User Details</h3><button class="close-modal">&times;</button></div><div class="modal-body"><p>Details for the selected user will be displayed here.</p></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Close</button></div></div></div>
+    <div class="modal" id="addUserModal"><div class="modal-content"><div class="modal-header"><h3>Add New User</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Full Name</label><input type="text" class="form-control" required></div><div class="form-group"><label>Email</label><input type="email" class="form-control" required></div><div class="form-group"><label>Role</label><select class="form-control" required><option>Student</option><option>Faculty</option><option>HR</option></select></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Add User</button></div></div></div>
+    <div class="modal" id="editUserModal"><div class="modal-content"><div class="modal-header"><h3>Edit User</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Full Name</label><input type="text" class="form-control" value="John Smith"></div><div class="form-group"><label>Email</label><input type="email" class="form-control" value="john.s@example.com"></div><div class="form-group"><label>Role</label><select class="form-control"><option selected>Student</option><option>Faculty</option><option>HR</option></select></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Save Changes</button></div></div></div>
+    <div class="modal" id="addCourseModal"><div class="modal-content"><div class="modal-header"><h3>Create New Course</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Course Code</label><input type="text" class="form-control" required></div><div class="form-group"><label>Course Title</label><input type="text" class="form-control" required></div><div class="form-group"><label>Duration (months)</label><input type="number" class="form-control" min="1" required></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Create Course</button></div></div></div>
+    <div class="modal" id="addBatchModal"><div class="modal-content"><div class="modal-header"><h3>Create New Batch</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Course</label><select class="form-control" required><option>Full-Stack Development</option><option>Data Science</option></select></div><div class="form-group"><label>Batch Code</label><input type="text" class="form-control" required></div><div class="form-group"><label>Start Date</label><input type="date" class="form-control" required></div><div class="form-group"><label>Capacity</label><input type="number" class="form-control" min="1" required></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Create Batch</button></div></div></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            /**
+             * ------------------------------------------------------------------------
+             *  1. PAGE NAVIGATION LOGIC
+             * ------------------------------------------------------------------------
+             * Handles switching between different pages (Dashboard, Users, etc.)
+             * by clicking on the sidebar links.
+             */
+            const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+            const pages = document.querySelectorAll('.main-content .page');
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const pageId = this.getAttribute('data-page');
+                    if (!pageId) return;
+
+                    // Handle active state for sidebar links
+                    sidebarLinks.forEach(l => l.parentElement.classList.remove('active'));
+                    this.parentElement.classList.add('active');
+                    
+                    // Show the correct page and hide others
+                    pages.forEach(page => {
+                        page.classList.toggle('active-page', page.id === `${pageId}-page`);
+                    });
+                });
+            });
+
+            /**
+             * ------------------------------------------------------------------------
+             *  2. TAB NAVIGATION LOGIC
+             * ------------------------------------------------------------------------
+             * Handles switching between tabs within a single page (e.g., in User Mgmt).
+             */
+            document.querySelectorAll('.tab-navigation').forEach(tabContainer => {
+                tabContainer.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'LI') {
+                        const tabId = e.target.getAttribute('data-tab');
+                        
+                        // Handle active state for tabs
+                        this.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        // Show the correct tab content within the same parent
+                        const contentContainer = this.parentElement;
+                        contentContainer.querySelectorAll('.tab-content').forEach(content => {
+                            content.classList.toggle('active', content.id === `${tabId}-tab`);
+                        });
+                    }
+                });
+            });
+            
+            /**
+             * ------------------------------------------------------------------------
+             *  3. MODAL HANDLING LOGIC
+             * ------------------------------------------------------------------------
+             * Manages the opening and closing of all modal dialogs.
+             */
+            const modals = document.querySelectorAll('.modal');
+            
+            // Open modals
+            document.querySelectorAll('.open-modal').forEach(button => {
+                button.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    const modal = document.getElementById(modalId);
+                    if (modal) modal.classList.add('active');
+                });
+            });
+
+            // Close modals using buttons with .close-modal or .close-modal-btn class
+            document.querySelectorAll('.modal .close-modal, .modal .close-modal-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('active');
+                });
+            });
+
+            // Close modal when clicking on the background overlay
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+
+            /**
+             * ------------------------------------------------------------------------
+             *  4. SIMULATED ACTIONS & DEMO LOGIC
+             * ------------------------------------------------------------------------
+             * These are placeholder functions. In a real application, you would
+             * replace the alert() calls with API requests to your backend.
+             */
+            document.querySelectorAll('.approve-user').forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('User approved! (This would trigger an API call)');
+                    this.closest('tr').remove(); // Remove row for demo
+                });
+            });
+
+            document.querySelectorAll('.reject-user').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to reject this user?')) {
+                        alert('User rejected. (API call would be made here)');
+                        this.closest('tr').remove(); // Remove row for demo
+                    }
+                });
+            });
+            
+            // Notification Bell Demo
+            document.querySelector('.header-notifications').addEventListener('click', () => {
+                alert('8 New Notifications:\n- 3 new user registrations\n- 2 upcoming batch starts\n- 1 system update pending\n- 2 assignments due for grading');
+            });
+        });
+    </script>
+</body>
+</html>
