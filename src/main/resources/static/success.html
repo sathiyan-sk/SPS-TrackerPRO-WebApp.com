@@ -126,9 +126,20 @@
         <img src="success-icon.png" alt="Success" class="success-icon">
         
         <h1 class="success-title">Account created successfully!</h1>
-        <p class="success-message">Welcome aboard! Start your success journey with SimpleFlow!</p>
+        <p class="success-message" id="successMessage">Welcome aboard! Your registration is pending admin approval. You will be notified once approved.</p>
         
-        <a href="index.html" class="start-button">Let's Start!</a>
+        <a href="index.html" class="start-button">Back to Login</a>
     </div>
+
+    <script>
+        // Display registration message if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const message = sessionStorage.getItem('registrationMessage');
+            if (message) {
+                document.getElementById('successMessage').textContent = message;
+                sessionStorage.removeItem('registrationMessage');
+            }
+        });
+    </script>
 </body>
 </html>
