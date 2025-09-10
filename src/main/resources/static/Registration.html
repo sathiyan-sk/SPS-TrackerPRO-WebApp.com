@@ -245,7 +245,7 @@
   </div>
 
   <script>
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
       // Clear previous errors
@@ -298,9 +298,48 @@
         isValid = false;
       }
       
-      // If all validations pass, redirect to success page
+      // If all validations pass, submit to API
       if (isValid) {
-        window.location.href = 'success.html';
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Registering...';
+        submitBtn.disabled = true;
+        
+        try {
+          const registrationData = {
+            firstName: firstName.value,
+            lastName: document.getElementById('lastName').value,
+            email: email.value,
+            password: password.value,
+            confirmPassword: confirmPassword.value,
+            mobileNo: mobileNo.value,
+            roleCategory: roleCategory.value
+          };
+
+          const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(registrationData)
+          });
+
+          const result = await response.json();
+          
+          if (result.success) {
+            // Store success message for success page
+            sessionStorage.setItem('registrationMessage', result.message);
+            window.location.href = 'success.html';
+          } else {
+            showNotification(result.message || 'Registration failed!', 'error');
+          }
+        } catch (error) {
+          console.error('Registration error:', error);
+          showNotification('Network error. Please try again.', 'error');
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
       }
     });
     
