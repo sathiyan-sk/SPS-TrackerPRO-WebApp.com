@@ -591,7 +591,276 @@
     <div class="modal" id="addBatchModal"><div class="modal-content"><div class="modal-header"><h3>Create New Batch</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Course</label><select class="form-control" required><option>Full-Stack Development</option><option>Data Science</option></select></div><div class="form-group"><label>Batch Code</label><input type="text" class="form-control" required></div><div class="form-group"><label>Start Date</label><input type="date" class="form-control" required></div><div class="form-group"><label>Capacity</label><input type="number" class="form-control" min="1" required></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Create Batch</button></div></div></div>
 
     <script>
+        // Global variables
+        let currentUser = null;
+        let pendingRegistrations = [];
+        let allUsers = [];
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const userStr = sessionStorage.getItem('user');
+            if (!userStr) {
+                window.location.href = '/index.html';
+                return;
+            }
+            
+            currentUser = JSON.parse(userStr);
+            
+            // Check if user is admin
+            if (currentUser.role !== 'ADMIN') {
+                alert('Access denied. Admin privileges required.');
+                sessionStorage.removeItem('user');
+                window.location.href = '/index.html';
+                return;
+            }
+
+            // Update user info in header
+            document.querySelector('.user-name').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
+            document.querySelector('.user-role').textContent = 'Administrator';
+
+            // Initialize dashboard
+            loadDashboardData();
+            initializeEventListeners();
+        });
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                await Promise.all([
+                    loadDashboardStats(),
+                    loadPendingRegistrations(),
+                    loadAllUsers()
+                ]);
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showNotification('Error loading dashboard data', 'error');
+            }
+        }
+
+        // Load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('/api/admin/dashboard-stats');
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateDashboardStats(result.data);
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        // Update dashboard statistics in UI
+        function updateDashboardStats(stats) {
+            document.querySelector('.stat-card.primary .stat-value').textContent = stats.totalStudents || 0;
+            document.querySelector('.stat-card.secondary .stat-value').textContent = stats.totalFaculty || 0;
+            document.querySelector('.stat-card.success .stat-value').textContent = stats.activeBatches || 0;
+            document.querySelector('.stat-card.warning .stat-value').textContent = stats.pendingRequests || 0;
+        }
+
+        // Load pending registrations
+        async function loadPendingRegistrations() {
+            try {
+                const response = await fetch('/api/admin/pending-registrations');
+                const result = await response.json();
+                
+                if (result.success) {
+                    pendingRegistrations = result.data;
+                    updatePendingRegistrationsTable();
+                }
+            } catch (error) {
+                console.error('Error loading pending registrations:', error);
+            }
+        }
+
+        // Update pending registrations table
+        function updatePendingRegistrationsTable() {
+            const tbody = document.querySelector('#dashboard-page .data-table tbody');
+            tbody.innerHTML = '';
+            
+            if (pendingRegistrations.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">No pending registrations</td></tr>';
+                return;
+            }
+            
+            pendingRegistrations.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.firstName} ${user.lastName || ''}</td>
+                    <td>${user.email}</td>
+                    <td><span class="badge badge-primary">${user.role}</span></td>
+                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                    <td class="actions">
+                        <button class="btn btn-sm btn-success" onclick="approveUser(${user.id})">Approve</button>
+                        <button class="btn btn-sm btn-danger" onclick="rejectUser(${user.id})">Reject</button>
+                        <button class="btn btn-sm btn-outline" onclick="viewUser(${user.id})">View</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Load all users
+        async function loadAllUsers() {
+            try {
+                const response = await fetch('/api/admin/users');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allUsers = result.data;
+                    updateUsersTable();
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        // Update users table
+        function updateUsersTable() {
+            const tbody = document.querySelector('#all-users-tab .data-table tbody');
+            tbody.innerHTML = '';
+            
+            if (allUsers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">No users found</td></tr>';
+                return;
+            }
+            
+            allUsers.forEach(user => {
+                const row = document.createElement('tr');
+                const statusClass = user.status === 'ACTIVE' ? 'badge-success' : 
+                                   user.status === 'PENDING' ? 'badge-warning' : 'badge-danger';
+                
+                row.innerHTML = `
+                    <td>${user.firstName} ${user.lastName || ''}</td>
+                    <td>${user.email}</td>
+                    <td><span class="badge badge-primary">${user.role}</span></td>
+                    <td><span class="badge ${statusClass}">${user.status}</span></td>
+                    <td class="actions">
+                        <button class="btn btn-sm btn-outline" onclick="editUser(${user.id})">Edit</button>
+                        <button class="btn btn-sm ${user.status === 'ACTIVE' ? 'btn-warning' : 'btn-success'}" 
+                                onclick="toggleUserStatus(${user.id})">
+                            ${user.status === 'ACTIVE' ? 'Disable' : 'Enable'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Approve user
+        async function approveUser(userId) {
+            try {
+                const response = await fetch(`/api/admin/approve-user/${userId}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('User approved successfully!', 'success');
+                    loadPendingRegistrations();
+                    loadDashboardStats();
+                } else {
+                    showNotification(result.message || 'Failed to approve user', 'error');
+                }
+            } catch (error) {
+                console.error('Error approving user:', error);
+                showNotification('Network error. Please try again.', 'error');
+            }
+        }
+
+        // Reject user
+        async function rejectUser(userId) {
+            if (!confirm('Are you sure you want to reject this user?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/admin/reject-user/${userId}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('User rejected successfully!', 'success');
+                    loadPendingRegistrations();
+                    loadDashboardStats();
+                } else {
+                    showNotification(result.message || 'Failed to reject user', 'error');
+                }
+            } catch (error) {
+                console.error('Error rejecting user:', error);
+                showNotification('Network error. Please try again.', 'error');
+            }
+        }
+
+        // Toggle user status
+        async function toggleUserStatus(userId) {
+            try {
+                const response = await fetch(`/api/admin/toggle-user-status/${userId}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('User status updated successfully!', 'success');
+                    loadAllUsers();
+                } else {
+                    showNotification(result.message || 'Failed to update user status', 'error');
+                }
+            } catch (error) {
+                console.error('Error updating user status:', error);
+                showNotification('Network error. Please try again.', 'error');
+            }
+        }
+
+        // View user (placeholder)
+        function viewUser(userId) {
+            const user = pendingRegistrations.find(u => u.id === userId);
+            if (user) {
+                alert(`User Details:\nName: ${user.firstName} ${user.lastName || ''}\nEmail: ${user.email}\nRole: ${user.role}\nMobile: ${user.mobile || 'N/A'}`);
+            }
+        }
+
+        // Edit user (placeholder)
+        function editUser(userId) {
+            showNotification('Edit user functionality will be implemented in future updates', 'info');
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                word-wrap: break-word;
+                ${type === 'success' ? 'background-color: #28a745;' : 
+                  type === 'error' ? 'background-color: #dc3545;' : 
+                  type === 'info' ? 'background-color: #17a2b8;' : 'background-color: #ffc107; color: #000;'}
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
             /**
              * ------------------------------------------------------------------------
              *  1. PAGE NAVIGATION LOGIC
