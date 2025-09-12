@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,9 +6,7 @@
     <title>TrackerPro - Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ==========================================================================
-           1. CSS VARIABLES FOR EASY THEMING
-           ========================================================================== */
+        /* CSS Variables */
         :root {
             --primary-color: #4a6fff;
             --primary-light: #e5eaff;
@@ -31,9 +29,6 @@
             --sidebar-width: 250px;
         }
 
-        /* ==========================================================================
-           2. GENERAL & BASE STYLES
-           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -48,9 +43,7 @@
             overflow-x: hidden;
         }
 
-        /* ==========================================================================
-           3. HEADER BAR
-           ========================================================================== */
+        /* Header */
         .header-bar {
             background-color: var(--white);
             height: var(--header-height);
@@ -79,7 +72,7 @@
         .logo-text {
             font-size: 1.4rem;
             font-weight: 600;
-            color:black;
+            color: black;
         }
 
         .header-actions {
@@ -183,9 +176,7 @@
             color: var(--text-light);
         }
 
-        /* ==========================================================================
-           4. LAYOUT & SIDEBAR
-           ========================================================================== */
+        /* Layout */
         .dashboard-container {
             display: flex;
             min-height: 100vh;
@@ -270,9 +261,7 @@
             font-weight: 600;
         }
 
-        /* ==========================================================================
-           5. MAIN CONTENT & PAGES
-           ========================================================================== */
+        /* Main Content */
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
@@ -293,7 +282,7 @@
             font-weight: 600;
         }
         
-        /* DASHBOARD STATS CARDS */
+        /* Dashboard Stats */
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -357,9 +346,7 @@
             margin-top: auto;
         }
 
-        /* ==========================================================================
-           6. SHARED COMPONENTS (Tables, Modals, Buttons, Forms, etc.)
-           ========================================================================== */
+        /* Components */
         .content-area {
             background-color: var(--white);
             border-radius: var(--border-radius-md);
@@ -429,6 +416,7 @@
         .btn-primary:hover { background-color: var(--primary-dark); }
         .btn-success { background-color: var(--success-color); color: white; }
         .btn-danger { background-color: var(--danger-color); color: white; }
+        .btn-warning { background-color: var(--warning-color); color: white; }
         .btn-outline { background-color: var(--white); border: 1px solid var(--gray-color); color: var(--text-color); }
         .btn-outline:hover { background-color: var(--light-color); }
         
@@ -485,512 +473,699 @@
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            max-width: 300px;
+            word-wrap: break-word;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        .notification.success { background-color: var(--success-color); }
+        .notification.error { background-color: var(--danger-color); }
+        .notification.warning { background-color: var(--warning-color); color: black; }
+        .notification.info { background-color: var(--primary-color); }
+        .notification.show { opacity: 1; transform: translateX(0); }
     </style>
 </head>
 <body>
 
-    <!-- HEADER BAR -->
-    <header class="header-bar">
-        <div class="logo-container">
-            <img src="logo.png" alt="TrackerPro Logo" class="logo">
-            <h1 class="logo-text">TrackerPro</h1>
-        </div>
-        <div class="header-actions">
-            <div class="header-search"><input type="text" placeholder="Search..."></div>
-            <div class="header-notifications" title="Notifications">🔔</div>
-            <div class="user-profile" title="Admin Profile">
-                <div class="user-avatar">A</div>
-                <div class="user-details">
-                    <div class="user-name">Admin User</div>
-                    <div class="user-role">Administrator</div>
-                </div>
+<!-- Header -->
+<header class="header-bar">
+    <div class="logo-container">
+        <img src="logo.png" alt="TrackerPro Logo" class="logo">
+        <h1 class="logo-text">TrackerPro</h1>
+    </div>
+    <div class="header-actions">
+        <div class="header-search"><input type="text" placeholder="Search users..."></div>
+        <div class="header-notifications" title="Notifications">🔔</div>
+        <div class="user-profile" title="Admin Profile">
+            <div class="user-avatar">A</div>
+            <div class="user-details">
+                <div class="user-name">Admin User</div>
+                <div class="user-role">Administrator</div>
             </div>
         </div>
-    </header>
-
-    <div class="dashboard-container">
-        <!-- SIDEBAR NAVIGATION -->
-        <aside class="sidebar">
-            <ul class="sidebar-menu">
-                <li class="active"><a href="#" data-page="dashboard"><span class="icon">📊</span><span>Dashboard</span></a></li>
-                <li><a href="#" data-page="users" class="menu-item"><div><span class="icon">👥</span><span>User Management</span></div><span class="badge">8</span></a></li>
-                <div class="menu-category">Education</div>
-                <li><a href="#" data-page="courses"><span class="icon">📚</span><span>Course Management</span></a></li>
-                <li><a href="#" data-page="batches"><span class="icon">🗂️</span><span>Batch Management</span></a></li>
-                <div class="menu-category">Settings</div>
-                <li><a href="#" data-page="settings"><span class="icon">⚙️</span><span>System Settings</span></a></li>
-                <li><a href="#" data-page="logout"><span class="icon">🚪</span><span>Logout</span></a></li>
-            </ul>
-        </aside>
-        
-        <!-- MAIN CONTENT AREA -->
-        <main class="main-content">
-            <!-- DASHBOARD PAGE -->
-            <section id="dashboard-page" class="page active-page">
-                <h1 class="page-title">Admin Workplace</h1>
-                <div class="dashboard-stats">
-                    <div class="stat-card primary"><div class="stat-icon">🧑‍🎓</div><div class="stat-title">Total Students</div><div class="stat-value">250</div><div class="stat-description">15 new registrations this week</div></div>
-                    <div class="stat-card secondary"><div class="stat-icon">👨‍🏫</div><div class="stat-title">Faculty Members</div><div class="stat-value">42</div><div class="stat-description">3 new this month</div></div>
-                    <div class="stat-card success"><div class="stat-icon">📚</div><div class="stat-title">Active Batches</div><div class="stat-value">15</div><div class="stat-description">2 starting next week</div></div>
-                    <div class="stat-card warning"><div class="stat-icon">⏳</div><div class="stat-title">Pending Requests</div><div class="stat-value">8</div><div class="stat-description">Require your attention</div></div>
-                </div>
-                <div class="content-area">
-                    <h2>New Registration Requests</h2>
-                    <table class="data-table">
-                        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Registered On</th><th>Actions</th></tr></thead>
-                        <tbody>
-                            <tr><td>John Smith</td><td>john.s@example.com</td><td><span class="badge badge-primary">Student</span></td><td>2023-10-26</td><td class="actions"><button class="btn btn-sm btn-success">Approve</button><button class="btn btn-sm btn-danger">Reject</button><button class="btn btn-sm btn-outline open-modal" data-modal="viewUserModal">View</button></td></tr>
-                            <tr><td>Sarah Johnson</td><td>sarah.j@example.com</td><td><span class="badge badge-primary">Faculty</span></td><td>2023-10-25</td><td class="actions"><button class="btn btn-sm btn-success">Approve</button><button class="btn btn-sm btn-danger">Reject</button><button class="btn btn-sm btn-outline open-modal" data-modal="viewUserModal">View</button></td></tr>
-                            <tr><td>Mike Williams</td><td>mike.w@example.com</td><td><span class="badge badge-primary">HR</span></td><td>2023-10-24</td><td class="actions"><button class="btn btn-sm btn-success">Approve</button><button class="btn btn-sm btn-danger">Reject</button><button class="btn btn-sm btn-outline open-modal" data-modal="viewUserModal">View</button></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            
-            <!-- USER MANAGEMENT PAGE -->
-            <section id="users-page" class="page">
-                <h1 class="page-title">User Management</h1>
-                <div class="content-area">
-                    <div class="table-actions"><button class="btn btn-primary open-modal" data-modal="addUserModal">Add New User</button></div>
-                    <ul class="tab-navigation"><li class="active" data-tab="all-users">All Users</li><li data-tab="students">Students</li><li data-tab="faculty">Faculty</li><li data-tab="hr">HR Staff</li></ul>
-                    <div id="all-users-tab" class="tab-content active"><table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr><td>John Smith</td><td>john.s@example.com</td><td><span class="badge badge-primary">Student</span></td><td><span class="badge badge-success">Active</span></td><td class="actions"><button class="btn btn-sm btn-outline open-modal" data-modal="editUserModal">Edit</button><button class="btn btn-sm btn-danger">Disable</button></td></tr><tr><td>Sarah Johnson</td><td>sarah.j@example.com</td><td><span class="badge badge-primary">Faculty</span></td><td><span class="badge badge-success">Active</span></td><td class="actions"><button class="btn btn-sm btn-outline open-modal" data-modal="editUserModal">Edit</button><button class="btn btn-sm btn-danger">Disable</button></td></tr></tbody></table></div>
-                    <div id="students-tab" class="tab-content"><p>Table with only student users will be displayed here.</p></div>
-                    <div id="faculty-tab" class="tab-content"><p>Table with only faculty users will be displayed here.</p></div>
-                    <div id="hr-tab" class="tab-content"><p>Table with only HR users will be displayed here.</p></div>
-                </div>
-            </section>
-            
-            <!-- COURSE MANAGEMENT PAGE -->
-            <section id="courses-page" class="page">
-                <h1 class="page-title">Course Management</h1>
-                <div class="content-area">
-                    <div class="table-actions"><button class="btn btn-primary open-modal" data-modal="addCourseModal">Create New Course</button></div>
-                    <table class="data-table"><thead><tr><th>Course Code</th><th>Title</th><th>Duration</th><th>Status</th><th>Batches</th><th>Actions</th></tr></thead><tbody><tr><td>FSD-001</td><td>Full-Stack Development</td><td>6 months</td><td><span class="badge badge-success">Active</span></td><td>3</td><td class="actions"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline open-modal" data-modal="addBatchModal">Add Batch</button></td></tr><tr><td>DS-002</td><td>Data Science</td><td>8 months</td><td><span class="badge badge-success">Active</span></td><td>2</td><td class="actions"><button class="btn btn-sm btn-outline">Edit</button><button class="btn btn-sm btn-outline open-modal" data-modal="addBatchModal">Add Batch</button></td></tr></tbody></table>
-                </div>
-            </section>
-            
-            <!-- BATCH MANAGEMENT PAGE -->
-            <section id="batches-page" class="page">
-                <h1 class="page-title">Batch Management</h1>
-                <div class="content-area">
-                    <div class="table-actions"><button class="btn btn-primary open-modal" data-modal="addBatchModal">Create New Batch</button></div>
-                    <table class="data-table"><thead><tr><th>Batch Code</th><th>Course</th><th>Start Date</th><th>Students</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr><td>FSB-001</td><td>Full-Stack Development</td><td>2023-07-01</td><td>28/30</td><td><span class="badge badge-success">Ongoing</span></td><td class="actions"><button class="btn btn-sm btn-outline">View Details</button><button class="btn btn-sm btn-outline">Edit</button></td></tr><tr><td>DSB-001</td><td>Data Science</td><td>2023-06-01</td><td>25/25</td><td><span class="badge badge-success">Ongoing</span></td><td class="actions"><button class="btn btn-sm btn-outline">View Details</button><button class="btn btn-sm btn-outline">Edit</button></td></tr></tbody></table>
-                </div>
-            </section>
-
-            <!-- SETTINGS PAGE (Placeholder) -->
-            <section id="settings-page" class="page"><h1 class="page-title">Account Settings</h1><div class="content-area"><h2>Maintanace</h2><p>System settings form will go here.</p></div></section>
-        </main>
     </div>
-    
-    <!-- MODALS -->
-    <div class="modal" id="viewUserModal"><div class="modal-content"><div class="modal-header"><h3>User Details</h3><button class="close-modal">&times;</button></div><div class="modal-body"><p>Details for the selected user will be displayed here.</p></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Close</button></div></div></div>
-    <div class="modal" id="addUserModal"><div class="modal-content"><div class="modal-header"><h3>Add New User</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Full Name</label><input type="text" class="form-control" required></div><div class="form-group"><label>Email</label><input type="email" class="form-control" required></div><div class="form-group"><label>Role</label><select class="form-control" required><option>Student</option><option>Faculty</option><option>HR</option></select></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Add User</button></div></div></div>
-    <div class="modal" id="editUserModal"><div class="modal-content"><div class="modal-header"><h3>Edit User</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Full Name</label><input type="text" class="form-control" value="John Smith"></div><div class="form-group"><label>Email</label><input type="email" class="form-control" value="john.s@example.com"></div><div class="form-group"><label>Role</label><select class="form-control"><option selected>Student</option><option>Faculty</option><option>HR</option></select></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Save Changes</button></div></div></div>
-    <div class="modal" id="addCourseModal"><div class="modal-content"><div class="modal-header"><h3>Create New Course</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Course Code</label><input type="text" class="form-control" required></div><div class="form-group"><label>Course Title</label><input type="text" class="form-control" required></div><div class="form-group"><label>Duration (months)</label><input type="number" class="form-control" min="1" required></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Create Course</button></div></div></div>
-    <div class="modal" id="addBatchModal"><div class="modal-content"><div class="modal-header"><h3>Create New Batch</h3><button class="close-modal">&times;</button></div><div class="modal-body"><form><div class="form-group"><label>Course</label><select class="form-control" required><option>Full-Stack Development</option><option>Data Science</option></select></div><div class="form-group"><label>Batch Code</label><input type="text" class="form-control" required></div><div class="form-group"><label>Start Date</label><input type="date" class="form-control" required></div><div class="form-group"><label>Capacity</label><input type="number" class="form-control" min="1" required></div></form></div><div class="modal-footer"><button class="btn btn-outline close-modal-btn">Cancel</button><button class="btn btn-primary">Create Batch</button></div></div></div>
+</header>
 
-    <script>
-        // Global variables
-        let currentUser = null;
-        let pendingRegistrations = [];
-        let allUsers = [];
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="active"><a href="#" data-page="dashboard"><span class="icon">📊</span><span>Dashboard</span></a></li>
+            <li><a href="#" data-page="users" class="menu-item"><div><span class="icon">👥</span><span>User Management</span></div><span class="badge" id="pending-badge">8</span></a></li>
+            <div class="menu-category">Education</div>
+            <li><a href="#" data-page="courses"><span class="icon">📚</span><span>Course Management</span></a></li>
+            <li><a href="#" data-page="batches"><span class="icon">🗂️</span><span>Batch Management</span></a></li>
+            <div class="menu-category">Settings</div>
+            <li><a href="#" data-page="settings"><span class="icon">⚙️</span><span>System Settings</span></a></li>
+            <li><a href="#" data-page="logout"><span class="icon">🚪</span><span>Logout</span></a></li>
+        </ul>
+    </aside>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in
-            const userStr = sessionStorage.getItem('user');
-            if (!userStr) {
-                window.location.href = '/index.html';
-                return;
-            }
-            
-            currentUser = JSON.parse(userStr);
-            
-            // Check if user is admin
-            if (currentUser.role !== 'ADMIN') {
-                alert('Access denied. Admin privileges required.');
-                sessionStorage.removeItem('user');
-                window.location.href = '/index.html';
-                return;
-            }
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <section id="dashboard-page" class="page active-page">
+            <h1 class="page-title">Admin Workplace</h1>
+            <div class="dashboard-stats">
+                <div class="stat-card primary">
+                    <div class="stat-icon">🧑\u200d🎓</div>
+                    <div class="stat-title">Total Students</div>
+                    <div class="stat-value" id="total-students">0</div>
+                    <div class="stat-description">Active student accounts</div>
+                </div>
+                <div class="stat-card secondary">
+                    <div class="stat-icon">👨\u200d🏫</div>
+                    <div class="stat-title">Faculty Members</div>
+                    <div class="stat-value" id="total-faculty">0</div>
+                    <div class="stat-description">Active faculty accounts</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-title">Active Batches</div>
+                    <div class="stat-value" id="active-batches">15</div>
+                    <div class="stat-description">Running courses</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-title">Pending Requests</div>
+                    <div class="stat-value" id="pending-requests">0</div>
+                    <div class="stat-description">Require your attention</div>
+                </div>
+            </div>
+            <div class="content-area">
+                <h2>New Registration Requests</h2>
+                <table class="data-table">
+                    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Mobile</th><th>Registered On</th><th>Actions</th></tr></thead>
+                    <tbody id="pending-registrations-tbody">
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            // Update user info in header
-            document.querySelector('.user-name').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
-            document.querySelector('.user-role').textContent = 'Administrator';
+        <!-- User Management Page -->
+        <section id="users-page" class="page">
+            <h1 class="page-title">User Management</h1>
+            <div class="content-area">
+                <div class="table-actions">
+                    <button class="btn btn-primary" onclick="openAddUserModal()">Add New User</button>
+                    <div>
+                        <select class="form-control" id="role-filter" onchange="filterUsersByRole()">
+                            <option value="all">All Roles</option>
+                            <option value="STUDENT">Students</option>
+                            <option value="FACULTY">Faculty</option>
+                            <option value="HR">HR Staff</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Mobile</th><th>Actions</th></tr></thead>
+                    <tbody id="all-users-tbody">
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            // Initialize dashboard
-            loadDashboardData();
-            initializeEventListeners();
+        <!-- Course Management Page -->
+        <section id="courses-page" class="page">
+            <h1 class="page-title">Course Management</h1>
+            <div class="content-area">
+                <div class="table-actions"><button class="btn btn-primary">Create New Course</button></div>
+                <p>Course management features coming soon...</p>
+            </div>
+        </section>
+
+        <!-- Batch Management Page -->
+        <section id="batches-page" class="page">
+            <h1 class="page-title">Batch Management</h1>
+            <div class="content-area">
+                <div class="table-actions"><button class="btn btn-primary">Create New Batch</button></div>
+                <p>Batch management features coming soon...</p>
+            </div>
+        </section>
+
+        <!-- Settings Page -->
+        <section id="settings-page" class="page">
+            <h1 class="page-title">System Settings</h1>
+            <div class="content-area">
+                <h2>Application Configuration</h2>
+                <p>System settings will be available in future updates.</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="addUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add New User</h3>
+            <button class="close-modal" onclick="closeModal('addUserModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" id="add-firstName" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" id="add-lastName">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" id="add-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile</label>
+                    <input type="text" class="form-control" id="add-mobile" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select class="form-control" id="add-role" required>
+                        <option value="">Select Role</option>
+                        <option value="STUDENT">Student</option>
+                        <option value="FACULTY">Faculty</option>
+                        <option value="HR">HR</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="add-password" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+            <button class="btn btn-primary" onclick="addUser()">Add User</button>
+        </div>
+    </div>
+</div>
+
+<!-- View User Modal -->
+<div class="modal" id="viewUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>User Details</h3>
+            <button class="close-modal" onclick="closeModal('viewUserModal')">&times;</button>
+        </div>
+        <div class="modal-body" id="viewUserContent">
+            <p>Loading user details...</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('viewUserModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables
+    let currentUser = null;
+    let pendingRegistrations = [];
+    let allUsers = [];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check authentication
+        const userStr = sessionStorage.getItem('user');
+        if (!userStr) {
+            window.location.href = '/index.html';
+            return;
+        }
+
+        currentUser = JSON.parse(userStr);
+
+        if (currentUser.role !== 'ADMIN') {
+            showNotification('Access denied. Admin privileges required.', 'error');
+            sessionStorage.removeItem('user');
+            setTimeout(() => window.location.href = '/index.html', 2000);
+            return;
+        }
+
+        // Update user info
+        document.querySelector('.user-name').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
+
+        // Initialize dashboard
+        loadDashboardData();
+        initializeEventListeners();
+    });
+
+    // Initialize event listeners
+    function initializeEventListeners() {
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('data-page');
+                if (!pageId) return;
+
+                if (pageId === 'logout') {
+                    if (confirm('Are you sure you want to logout?')) {
+                        sessionStorage.removeItem('user');
+                        window.location.href = '/index.html';
+                    }
+                    return;
+                }
+
+                // Update active sidebar
+                document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+                this.parentElement.classList.add('active');
+
+                // Show correct page
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.toggle('active-page', page.id === `${pageId}-page`);
+                });
+
+                // Load page-specific data
+                if (pageId === 'users') {
+                    loadAllUsers();
+                }
+            });
         });
 
-        // Load dashboard data
-        async function loadDashboardData() {
-            try {
-                await Promise.all([
-                    loadDashboardStats(),
-                    loadPendingRegistrations(),
-                    loadAllUsers()
-                ]);
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-                showNotification('Error loading dashboard data', 'error');
+        // Notifications
+        document.querySelector('.header-notifications').addEventListener('click', () => {
+            showNotification('8 New Notifications:\
+- 3 new user registrations\
+- 2 upcoming batch starts\
+- 1 system update pending\
+- 2 assignments due for grading', 'info');
+        });
+
+        // Search functionality
+        document.querySelector('.header-search input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            filterUsers(searchTerm);
+        });
+    }
+
+    // Load dashboard data
+    async function loadDashboardData() {
+        try {
+            await Promise.all([
+                loadDashboardStats(),
+                loadPendingRegistrations(),
+                loadAllUsers()
+            ]);
+        } catch (error) {
+            console.error('Error loading dashboard data:', error);
+            showNotification('Error loading dashboard data', 'error');
+        }
+    }
+
+    // Load dashboard statistics
+    async function loadDashboardStats() {
+        try {
+            const response = await fetch('/api/admin/dashboard-stats');
+            const result = await response.json();
+
+            if (result.success) {
+                updateDashboardStats(result.data);
             }
+        } catch (error) {
+            console.error('Error loading dashboard stats:', error);
         }
+    }
 
-        // Load dashboard statistics
-        async function loadDashboardStats() {
-            try {
-                const response = await fetch('/api/admin/dashboard-stats');
-                const result = await response.json();
-                
-                if (result.success) {
-                    updateDashboardStats(result.data);
-                }
-            } catch (error) {
-                console.error('Error loading dashboard stats:', error);
+    // Update dashboard statistics
+    function updateDashboardStats(stats) {
+        document.getElementById('total-students').textContent = stats.totalStudents || 0;
+        document.getElementById('total-faculty').textContent = stats.totalFaculty || 0;
+        document.getElementById('active-batches').textContent = stats.activeBatches || 0;
+        document.getElementById('pending-requests').textContent = stats.pendingRequests || 0;
+        document.getElementById('pending-badge').textContent = stats.pendingRequests || 0;
+    }
+
+    // Load pending registrations
+    async function loadPendingRegistrations() {
+        try {
+            const response = await fetch('/api/admin/pending-registrations');
+            const result = await response.json();
+
+            if (result.success) {
+                pendingRegistrations = result.data;
+                updatePendingRegistrationsTable();
             }
+        } catch (error) {
+            console.error('Error loading pending registrations:', error);
+        }
+    }
+
+    // Update pending registrations table
+    function updatePendingRegistrationsTable() {
+        const tbody = document.getElementById('pending-registrations-tbody');
+        tbody.innerHTML = '';
+
+        if (pendingRegistrations.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #666;">No pending registrations</td></tr>';
+            return;
         }
 
-        // Update dashboard statistics in UI
-        function updateDashboardStats(stats) {
-            document.querySelector('.stat-card.primary .stat-value').textContent = stats.totalStudents || 0;
-            document.querySelector('.stat-card.secondary .stat-value').textContent = stats.totalFaculty || 0;
-            document.querySelector('.stat-card.success .stat-value').textContent = stats.activeBatches || 0;
-            document.querySelector('.stat-card.warning .stat-value').textContent = stats.pendingRequests || 0;
-        }
-
-        // Load pending registrations
-        async function loadPendingRegistrations() {
-            try {
-                const response = await fetch('/api/admin/pending-registrations');
-                const result = await response.json();
-                
-                if (result.success) {
-                    pendingRegistrations = result.data;
-                    updatePendingRegistrationsTable();
-                }
-            } catch (error) {
-                console.error('Error loading pending registrations:', error);
-            }
-        }
-
-        // Update pending registrations table
-        function updatePendingRegistrationsTable() {
-            const tbody = document.querySelector('#dashboard-page .data-table tbody');
-            tbody.innerHTML = '';
-            
-            if (pendingRegistrations.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">No pending registrations</td></tr>';
-                return;
-            }
-            
-            pendingRegistrations.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.firstName} ${user.lastName || ''}</td>
-                    <td>${user.email}</td>
-                    <td><span class="badge badge-primary">${user.role}</span></td>
-                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td class="actions">
-                        <button class="btn btn-sm btn-success" onclick="approveUser(${user.id})">Approve</button>
-                        <button class="btn btn-sm btn-danger" onclick="rejectUser(${user.id})">Reject</button>
-                        <button class="btn btn-sm btn-outline" onclick="viewUser(${user.id})">View</button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Load all users
-        async function loadAllUsers() {
-            try {
-                const response = await fetch('/api/admin/users');
-                const result = await response.json();
-                
-                if (result.success) {
-                    allUsers = result.data;
-                    updateUsersTable();
-                }
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        }
-
-        // Update users table
-        function updateUsersTable() {
-            const tbody = document.querySelector('#all-users-tab .data-table tbody');
-            tbody.innerHTML = '';
-            
-            if (allUsers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">No users found</td></tr>';
-                return;
-            }
-            
-            allUsers.forEach(user => {
-                const row = document.createElement('tr');
-                const statusClass = user.status === 'ACTIVE' ? 'badge-success' : 
-                                   user.status === 'PENDING' ? 'badge-warning' : 'badge-danger';
-                
-                row.innerHTML = `
-                    <td>${user.firstName} ${user.lastName || ''}</td>
-                    <td>${user.email}</td>
-                    <td><span class="badge badge-primary">${user.role}</span></td>
-                    <td><span class="badge ${statusClass}">${user.status}</span></td>
-                    <td class="actions">
-                        <button class="btn btn-sm btn-outline" onclick="editUser(${user.id})">Edit</button>
-                        <button class="btn btn-sm ${user.status === 'ACTIVE' ? 'btn-warning' : 'btn-success'}" 
-                                onclick="toggleUserStatus(${user.id})">
-                            ${user.status === 'ACTIVE' ? 'Disable' : 'Enable'}
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Approve user
-        async function approveUser(userId) {
-            try {
-                const response = await fetch(`/api/admin/approve-user/${userId}`, {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showNotification('User approved successfully!', 'success');
-                    loadPendingRegistrations();
-                    loadDashboardStats();
-                } else {
-                    showNotification(result.message || 'Failed to approve user', 'error');
-                }
-            } catch (error) {
-                console.error('Error approving user:', error);
-                showNotification('Network error. Please try again.', 'error');
-            }
-        }
-
-        // Reject user
-        async function rejectUser(userId) {
-            if (!confirm('Are you sure you want to reject this user?')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/api/admin/reject-user/${userId}`, {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showNotification('User rejected successfully!', 'success');
-                    loadPendingRegistrations();
-                    loadDashboardStats();
-                } else {
-                    showNotification(result.message || 'Failed to reject user', 'error');
-                }
-            } catch (error) {
-                console.error('Error rejecting user:', error);
-                showNotification('Network error. Please try again.', 'error');
-            }
-        }
-
-        // Toggle user status
-        async function toggleUserStatus(userId) {
-            try {
-                const response = await fetch(`/api/admin/toggle-user-status/${userId}`, {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showNotification('User status updated successfully!', 'success');
-                    loadAllUsers();
-                } else {
-                    showNotification(result.message || 'Failed to update user status', 'error');
-                }
-            } catch (error) {
-                console.error('Error updating user status:', error);
-                showNotification('Network error. Please try again.', 'error');
-            }
-        }
-
-        // View user (placeholder)
-        function viewUser(userId) {
-            const user = pendingRegistrations.find(u => u.id === userId);
-            if (user) {
-                alert(`User Details:\nName: ${user.firstName} ${user.lastName || ''}\nEmail: ${user.email}\nRole: ${user.role}\nMobile: ${user.mobile || 'N/A'}`);
-            }
-        }
-
-        // Edit user (placeholder)
-        function editUser(userId) {
-            showNotification('Edit user functionality will be implemented in future updates', 'info');
-        }
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                border-radius: 5px;
-                color: white;
-                font-weight: 500;
-                z-index: 10000;
-                max-width: 300px;
-                word-wrap: break-word;
-                ${type === 'success' ? 'background-color: #28a745;' : 
-                  type === 'error' ? 'background-color: #dc3545;' : 
-                  type === 'info' ? 'background-color: #17a2b8;' : 'background-color: #ffc107; color: #000;'}
+        pendingRegistrations.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.firstName} ${user.lastName || ''}</td>
+                <td>${user.email}</td>
+                <td><span class="badge badge-primary">${user.role}</span></td>
+                <td>${user.mobile || 'N/A'}</td>
+                <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                <td class="actions">
+                    <button class="btn btn-sm btn-success" onclick="approveUser(${user.id})">Approve</button>
+                    <button class="btn btn-sm btn-danger" onclick="rejectUser(${user.id})">Reject</button>
+                    <button class="btn btn-sm btn-outline" onclick="viewUser(${user.id})">View</button>
+                </td>
             `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
+            tbody.appendChild(row);
+        });
+    }
+
+    // Load all users
+    async function loadAllUsers() {
+        try {
+            const response = await fetch('/api/admin/users');
+            const result = await response.json();
+
+            if (result.success) {
+                allUsers = result.data;
+                updateUsersTable();
+            }
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
+    }
+
+    // Update users table
+    function updateUsersTable(users = allUsers) {
+        const tbody = document.getElementById('all-users-tbody');
+        tbody.innerHTML = '';
+
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #666;">No users found</td></tr>';
+            return;
+        }
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            const statusClass = user.status === 'ACTIVE' ? 'badge-success' :
+                               user.status === 'PENDING' ? 'badge-warning' : 'badge-danger';
+
+            row.innerHTML = `
+                <td>${user.firstName} ${user.lastName || ''}</td>
+                <td>${user.email}</td>
+                <td><span class="badge badge-primary">${user.role}</span></td>
+                <td><span class="badge ${statusClass}">${user.status}</span></td>
+                <td>${user.mobile || 'N/A'}</td>
+                <td class="actions">
+                    <button class="btn btn-sm btn-outline" onclick="viewUser(${user.id})">View</button>
+                    <button class="btn btn-sm ${user.status === 'ACTIVE' ? 'btn-warning' : 'btn-success'}"
+                            onclick="toggleUserStatus(${user.id})">
+                        ${user.status === 'ACTIVE' ? 'Disable' : 'Enable'}
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Filter users by role
+    function filterUsersByRole() {
+        const selectedRole = document.getElementById('role-filter').value;
+        const filteredUsers = selectedRole === 'all' ? allUsers :
+                             allUsers.filter(user => user.role === selectedRole);
+        updateUsersTable(filteredUsers);
+    }
+
+    // Filter users by search term
+    function filterUsers(searchTerm) {
+        const filteredUsers = allUsers.filter(user =>
+            user.firstName.toLowerCase().includes(searchTerm) ||
+            (user.lastName && user.lastName.toLowerCase().includes(searchTerm)) ||
+            user.email.toLowerCase().includes(searchTerm) ||
+            user.role.toLowerCase().includes(searchTerm)
+        );
+        updateUsersTable(filteredUsers);
+    }
+
+    // Approve user
+    async function approveUser(userId) {
+        try {
+            const response = await fetch(`/api/admin/approve-user/${userId}`, {
+                method: 'POST'
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('User approved successfully!', 'success');
+                loadPendingRegistrations();
+                loadDashboardStats();
+                loadAllUsers();
+            } else {
+                showNotification(result.message || 'Failed to approve user', 'error');
+            }
+        } catch (error) {
+            console.error('Error approving user:', error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    }
+
+    // Reject user
+    async function rejectUser(userId) {
+        if (!confirm('Are you sure you want to reject this user? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/admin/reject-user/${userId}`, {
+                method: 'POST'
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('User rejected successfully!', 'success');
+                loadPendingRegistrations();
+                loadDashboardStats();
+                loadAllUsers();
+            } else {
+                showNotification(result.message || 'Failed to reject user', 'error');
+            }
+        } catch (error) {
+            console.error('Error rejecting user:', error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    }
+
+    // Toggle user status
+    async function toggleUserStatus(userId) {
+        const user = allUsers.find(u => u.id === userId);
+        const action = user.status === 'ACTIVE' ? 'disable' : 'enable';
+
+        if (!confirm(`Are you sure you want to ${action} this user?`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/admin/toggle-user-status/${userId}`, {
+                method: 'POST'
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification(`User ${action}d successfully!`, 'success');
+                loadAllUsers();
+            } else {
+                showNotification(result.message || `Failed to ${action} user`, 'error');
+            }
+        } catch (error) {
+            console.error(`Error ${action}ing user:`, error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    }
+
+    // Delete user
+    async function deleteUser(userId) {
+        if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/admin/users/${userId}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('User deleted successfully!', 'success');
+                loadAllUsers();
+                loadDashboardStats();
+            } else {
+                showNotification(result.message || 'Failed to delete user', 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    }
+
+    // View user details
+    function viewUser(userId) {
+        const user = [...pendingRegistrations, ...allUsers].find(u => u.id === userId);
+        if (!user) {
+            showNotification('User not found', 'error');
+            return;
+        }
+
+        const content = `
+            <div class="form-group">
+                <label>Full Name:</label>
+                <p>${user.firstName} ${user.lastName || ''}</p>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <p>${user.email}</p>
+            </div>
+            <div class="form-group">
+                <label>Mobile:</label>
+                <p>${user.mobile || 'N/A'}</p>
+            </div>
+            <div class="form-group">
+                <label>Role:</label>
+                <p><span class="badge badge-primary">${user.role}</span></p>
+            </div>
+            <div class="form-group">
+                <label>Status:</label>
+                <p><span class="badge ${user.status === 'ACTIVE' ? 'badge-success' :
+                                     user.status === 'PENDING' ? 'badge-warning' : 'badge-danger'}">${user.status}</span></p>
+            </div>
+            <div class="form-group">
+                <label>Created:</label>
+                <p>${new Date(user.createdAt).toLocaleString()}</p>
+            </div>
+            <div class="form-group">
+                <label>Last Updated:</label>
+                <p>${new Date(user.updatedAt).toLocaleString()}</p>
+            </div>
+        `;
+
+        document.getElementById('viewUserContent').innerHTML = content;
+        openModal('viewUserModal');
+    }
+
+    // Add new user
+    async function addUser() {
+        const form = document.getElementById('addUserForm');
+        const formData = new FormData(form);
+
+        const userData = {
+            firstName: document.getElementById('add-firstName').value,
+            lastName: document.getElementById('add-lastName').value,
+            email: document.getElementById('add-email').value,
+            mobile: document.getElementById('add-mobile').value,
+            role: document.getElementById('add-role').value,
+            password: document.getElementById('add-password').value,
+            confirmPassword: document.getElementById('add-password').value,
+            roleCategory: document.getElementById('add-role').value
+        };
+
+        if (!userData.firstName || !userData.email || !userData.role || !userData.password) {
+            showNotification('Please fill in all required fields', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showNotification('User added successfully!', 'success');
+                closeModal('addUserModal');
+                form.reset();
+
+                // Auto-approve the user since admin is adding
+                if (result.user && result.user.id) {
+                    await approveUser(result.user.id);
+                }
+
+                loadAllUsers();
+                loadDashboardStats();
+            } else {
+                showNotification(result.message || 'Failed to add user', 'error');
+            }
+        } catch (error) {
+            console.error('Error adding user:', error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    }
+
+    // Modal functions
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    function openAddUserModal() {
+        openModal('addUserModal');
+    }
+
+    // Show notification
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        // Trigger animation
+        setTimeout(() => notification.classList.add('show'), 100);
+
+        // Remove notification
+        setTimeout(() => {
+            notification.classList.remove('show');
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.parentNode.removeChild(notification);
                 }
-            }, 5000);
-        }
+            }, 300);
+        }, 5000);
+    }
 
-        // Initialize event listeners
-        function initializeEventListeners() {
-            /**
-             * ------------------------------------------------------------------------
-             *  1. PAGE NAVIGATION LOGIC
-             * ------------------------------------------------------------------------
-             * Handles switching between different pages (Dashboard, Users, etc.)
-             * by clicking on the sidebar links.
-             */
-            const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
-            const pages = document.querySelectorAll('.main-content .page');
-            
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const pageId = this.getAttribute('data-page');
-                    if (!pageId) return;
-
-                    // Handle active state for sidebar links
-                    sidebarLinks.forEach(l => l.parentElement.classList.remove('active'));
-                    this.parentElement.classList.add('active');
-                    
-                    // Show the correct page and hide others
-                    pages.forEach(page => {
-                        page.classList.toggle('active-page', page.id === `${pageId}-page`);
-                    });
-                });
-            });
-
-            /**
-             * ------------------------------------------------------------------------
-             *  2. TAB NAVIGATION LOGIC
-             * ------------------------------------------------------------------------
-             * Handles switching between tabs within a single page (e.g., in User Mgmt).
-             */
-            document.querySelectorAll('.tab-navigation').forEach(tabContainer => {
-                tabContainer.addEventListener('click', function(e) {
-                    if (e.target.tagName === 'LI') {
-                        const tabId = e.target.getAttribute('data-tab');
-                        
-                        // Handle active state for tabs
-                        this.querySelectorAll('li').forEach(li => li.classList.remove('active'));
-                        e.target.classList.add('active');
-                        
-                        // Show the correct tab content within the same parent
-                        const contentContainer = this.parentElement;
-                        contentContainer.querySelectorAll('.tab-content').forEach(content => {
-                            content.classList.toggle('active', content.id === `${tabId}-tab`);
-                        });
-                    }
-                });
-            });
-            
-            /**
-             * ------------------------------------------------------------------------
-             *  3. MODAL HANDLING LOGIC
-             * ------------------------------------------------------------------------
-             * Manages the opening and closing of all modal dialogs.
-             */
-            const modals = document.querySelectorAll('.modal');
-            
-            // Open modals
-            document.querySelectorAll('.open-modal').forEach(button => {
-                button.addEventListener('click', function() {
-                    const modalId = this.getAttribute('data-modal');
-                    const modal = document.getElementById(modalId);
-                    if (modal) modal.classList.add('active');
-                });
-            });
-
-            // Close modals using buttons with .close-modal or .close-modal-btn class
-            document.querySelectorAll('.modal .close-modal, .modal .close-modal-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    this.closest('.modal').classList.remove('active');
-                });
-            });
-
-            // Close modal when clicking on the background overlay
-            modals.forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('active');
-                    }
-                });
-            });
-
-            /**
-             * ------------------------------------------------------------------------
-             *  4. SIMULATED ACTIONS & DEMO LOGIC
-             * ------------------------------------------------------------------------
-             * These are placeholder functions. In a real application, you would
-             * replace the alert() calls with API requests to your backend.
-             */
-            document.querySelectorAll('.approve-user').forEach(button => {
-                button.addEventListener('click', function() {
-                    alert('User approved! (This would trigger an API call)');
-                    this.closest('tr').remove(); // Remove row for demo
-                });
-            });
-
-            document.querySelectorAll('.reject-user').forEach(button => {
-                button.addEventListener('click', function() {
-                    if (confirm('Are you sure you want to reject this user?')) {
-                        alert('User rejected. (API call would be made here)');
-                        this.closest('tr').remove(); // Remove row for demo
-                    }
-                });
-            });
-            
-            // Notification Bell Demo
-            document.querySelector('.header-notifications').addEventListener('click', () => {
-                showNotification('8 New Notifications:\n- 3 new user registrations\n- 2 upcoming batch starts\n- 1 system update pending\n- 2 assignments due for grading', 'info');
-            });
-
-            // Logout functionality
-            document.querySelector('[data-page="logout"]').addEventListener('click', function(e) {
-                e.preventDefault();
-                if (confirm('Are you sure you want to logout?')) {
-                    sessionStorage.removeItem('user');
-                    window.location.href = '/index.html';
-                }
-            });
-        }
-
-        // Global functions for window scope
-        window.approveUser = approveUser;
-        window.rejectUser = rejectUser;
-        window.toggleUserStatus = toggleUserStatus;
-        window.viewUser = viewUser;
-        window.editUser = editUser;
-        });
-    </script>
+    // Global functions for onclick handlers
+    window.approveUser = approveUser;
+    window.rejectUser = rejectUser;
+    window.toggleUserStatus = toggleUserStatus;
+    window.deleteUser = deleteUser;
+    window.viewUser = viewUser;
+    window.addUser = addUser;
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.openAddUserModal = openAddUserModal;
+    window.filterUsersByRole = filterUsersByRole;
+</script>
 </body>
 </html>
