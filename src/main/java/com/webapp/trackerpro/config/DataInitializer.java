@@ -32,7 +32,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         createDefaultAdminUser();
-        createSampleUsers();
     }
 
     private void createDefaultAdminUser() {
@@ -52,39 +51,6 @@ public class DataInitializer implements CommandLineRunner {
             logger.info("Default admin user created with email: {}", adminEmail);
         } else {
             logger.info("Default admin user already exists");
-        }
-    }
-
-    private void createSampleUsers() {
-        logger.info("Creating sample users for testing...");
-
-        // Sample pending registrations
-        createSampleUserIfNotExists("John", "Smith", "john.s@example.com", "password123", "9876543210", Role.STUDENT, UserStatus.PENDING);
-        createSampleUserIfNotExists("Sarah", "Johnson", "sarah.j@example.com", "password123", "9876543211", Role.FACULTY, UserStatus.PENDING);
-        createSampleUserIfNotExists("Mike", "Williams", "mike.w@example.com", "password123", "9876543212", Role.HR, UserStatus.PENDING);
-
-        // Sample active users
-        createSampleUserIfNotExists("Alice", "Brown", "alice.b@example.com", "password123", "9876543213", Role.STUDENT, UserStatus.ACTIVE);
-        createSampleUserIfNotExists("Robert", "Davis", "robert.d@example.com", "password123", "9876543214", Role.FACULTY, UserStatus.ACTIVE);
-        createSampleUserIfNotExists("Emily", "Wilson", "emily.w@example.com", "password123", "9876543215", Role.HR, UserStatus.ACTIVE);
-
-        logger.info("Sample users created successfully");
-    }
-
-    private void createSampleUserIfNotExists(String firstName, String lastName, String email, 
-                                           String password, String mobile, Role role, UserStatus status) {
-        if (!userRepository.existsByEmail(email)) {
-            User user = new User();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password));
-            user.setMobile(mobile);
-            user.setRole(role);
-            user.setStatus(status);
-
-            userRepository.save(user);
-            logger.debug("Sample user created: {} - {}", email, status);
         }
     }
 }
