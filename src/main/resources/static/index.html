@@ -29,7 +29,7 @@
             width: 50%;
             height: 100%;
             z-index: -1;
-            background-image: url('bg-curves.png');
+            background-image: url('Vector.svg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -68,102 +68,54 @@
             border-radius: 8px;
             width: 100%;
             max-width: 500px;
-            box-shadow:none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
         /* === LOGIN HEADER === */
         .login-header {
             text-align: center;
-            padding: 30px 30px 0 30px;
+            padding: 30px 30px 10px 30px;
         }
 
-        .login-title {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .login-subtitle {
-            color: #666;
-            font-size: 16px;
+        /* === LOGO STYLING === */
+        .logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        /* === TAB NAVIGATION (UPDATED STYLE) === */
-        .tab-container {
-            padding: 0 30px;
-            margin-bottom: 20px;
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
         }
 
-        .tab-navigation {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 0;
-            background: #f8f9fa;
-            padding: 4px;
-            border-radius: 8px;
+        .logo span {
+            font-size: 22px;
+            font-weight: bold;
         }
 
-        .tab-button {
-            flex: 1;
-            padding: 12px 16px;
-            background: transparent;
-            border: none;
-            font-size: 14px;
-            font-weight: 500;
-            color:black;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 6px;
-            text-align: center;
-            white-space: nowrap;
+        /* === TITLE STYLING === */
+        .title {
+            font-size: 28px;
+            font-weight: bolder;
+            color: #333;
+            margin-bottom: 8px;
+            text-align: left;
         }
 
-        .tab-button.active {
-            background: #ffde59;
-            color: black;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .tab-button:hover:not(.active) {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .tab-button:active {
-            transform: translateY(0);
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+            text-align: left;
         }
 
         /* === FORM CONTAINER === */
         .form-container {
-            padding: 0 30px 30px 30px;
-        }
-
-        .form-panel {
-            display: none;
-        }
-
-        .form-panel.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(10px);
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0);
-            }
+            padding: 15px 30px 30px 30px;
         }
 
         /* === FORM ELEMENTS === */
@@ -191,49 +143,32 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-        }
-
-        .form-input.error {
-            border-color: #ef4444;
+            border-color: #2568ef;
+            box-shadow: 0 0 0 3px rgba(37, 104, 239, 0.1);
         }
 
         .form-input::placeholder {
             color: #9ca3af;
         }
 
-        /* === PASSWORD INPUT === */
-        .password-wrapper {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #6b7280;
-            padding: 4px;
-            transition: color 0.2s ease;
-        }
-
-        .password-toggle:hover {
-            color: #0ea5e9;
+        /* === INPUT ERROR STATE === */
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
         }
 
         /* === ERROR MESSAGES === */
         .error-message {
-            display: flex;
+            display: none;
             align-items: center;
             gap: 6px;
             margin-top: 6px;
             font-size: 12px;
             color: #ef4444;
+        }
+
+        .error-message.show {
+            display: flex;
         }
 
         .error-icon {
@@ -250,11 +185,44 @@
             flex-shrink: 0;
         }
 
-        /* === FORM ACTIONS === */
-        .form-actions {
-            margin-bottom: 25px;
+        /* === PASSWORD INPUT WITH ICON === */
+        .password-wrapper {
+            position: relative;
         }
 
+        .password-wrapper .form-input {
+            padding-right: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            background: #f3f4f6;
+        }
+
+        .eye-icon {
+            width: 18px;
+            height: 18px;
+            fill: #9ca3af;
+            transition: fill 0.2s ease;
+        }
+
+        .password-toggle:hover .eye-icon {
+            fill: #6b7280;
+        }
+
+        /* === CHECKBOX STYLING === */
         .checkbox-row {
             display: flex;
             align-items: center;
@@ -280,8 +248,9 @@
             cursor: pointer;
         }
 
+        /* === FORGOT PASSWORD === */
         .forgot-link {
-            color: #0ea5e9;
+            color: #2568ef;
             text-decoration: none;
             font-size: 14px;
             transition: color 0.2s ease;
@@ -289,14 +258,10 @@
 
         .forgot-link:hover {
             text-decoration: underline;
-            color: #0284c7;
+            color: #0b4ed8;
         }
 
-        .forgot-right {
-            text-align: right;
-        }
-
-        /* === LOGIN BUTTONS === */
+        /* === LOGIN BUTTON === */
         .login-button {
             width: 100%;
             padding: 12px;
@@ -307,14 +272,14 @@
             cursor: pointer;
             transition: all 0.2s ease;
             margin-bottom: 20px;
-            background: #0ea5e9;
+            background: #2568ef;
             color: white;
         }
 
         .login-button:hover {
-            background: #0284c7;
+            background: #0b4ed8;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 104, 239, 0.3);
         }
 
         .login-button:active {
@@ -329,7 +294,7 @@
         }
 
         .auth-footer a {
-            color: #0ea5e9;
+            color: #2568ef;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s ease;
@@ -337,7 +302,7 @@
 
         .auth-footer a:hover {
             text-decoration: underline;
-            color: #0284c7;
+            color: #0b4ed8;
         }
 
         /* === BOTTOM FOOTER === */
@@ -360,26 +325,16 @@
                 width: 70%;
                 opacity: 0.2;
             }
-            
+
             .login-container {
                 margin: 0 10px;
                 max-width: calc(100% - 20px);
             }
-            
+
             .form-container,
-            .login-header,
-            .tab-container {
+            .login-header {
                 padding-left: 20px;
                 padding-right: 20px;
-            }
-
-            .tab-button {
-                font-size: 13px;
-                padding: 10px 12px;
-            }
-
-            .tab-navigation {
-                gap: 4px;
             }
         }
 
@@ -388,360 +343,319 @@
                 padding: 20px 10px;
             }
 
-            .login-title {
-                font-size: 1.4rem;
+            .title {
+                font-size: 24px;
             }
 
-            .tab-button {
-                font-size: 12px;
-                padding: 8px 10px;
+            .subtitle {
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <img src="banner.png" alt="Tracker PRO Banner" class="header-banner" />
-    </header>
-    
-    <!-- Background pattern -->
-    <div class="bg-curves.png"></div>
+<!-- Header Section -->
+<header>
+    <img src="banner.png" alt="Tracker PRO Banner" class="header-banner" />
+</header>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="login-container">
-            <!-- Login Header -->
-            <div class="login-header">
-                <h2 class="login-title">Login Portal</h2>
-                <p class="login-subtitle">Have A Nice Day With You <span>👋</span></p>
+<!-- Background pattern -->
+<div class="bg"></div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="login-container">
+        <!-- Login Header with Logo -->
+        <div class="login-header">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="logo.png" alt="Tracker Pro logo" class="logo-image">
+                <span>Tracker Pro</span>
             </div>
-            
-            <!-- Tab Navigation -->
-            <div class="tab-container">
-                <div class="tab-navigation">
-                    <button class="tab-button active" data-tab="student">Student Login</button>
-                    <button class="tab-button" data-tab="employer">Employer / Users</button>
+
+            <!-- Title -->
+            <h1 class="title">Log in</h1>
+            <p class="subtitle">to access Tracker</p>
+        </div>
+
+        <!-- Single Form Container -->
+        <div class="form-container">
+            <!-- Using employer-form ID to work with backend script -->
+            <form id="employer-form">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label class="form-label" for="employer-email">Email Address</label>
+                    <input
+                            type="email"
+                            id="employer-email"
+                            class="form-input"
+                            placeholder="Enter your login e-mail"
+                            maxlength="30"
+                            required
+                    >
+                    <div class="error-message" id="employer-email-error">
+                        <span class="error-icon">!</span>
+                        <span class="error-text">This field is required</span>
+                    </div>
                 </div>
-            </div>  
-            
-            <!-- Form Container -->
-            <div class="form-container">
-                <!-- Student Form -->
-                <div class="form-panel active" id="student-panel">
-                    <form id="student-form">
-                        <div class="form-group">
-                            <label class="form-label" for="student-email">Email</label>
-                            <input 
-                                type="email" 
-                                id="student-email" 
-                                class="form-input error"
-                                placeholder="Enter your email id"
-                                required
-                            >
-                            <div class="error-message">
-                                <span class="error-icon">!</span>
-                                This field is required
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="student-password">Password</label>
-                            <div class="password-wrapper">
-                                <input 
-                                    type="password" 
-                                    id="student-password" 
-                                    class="form-input error"
-                                    placeholder="Must be atleast 6 characters"
-                                    required
-                                >
-                                <button type="button" class="password-toggle" onclick="togglePassword('student-password')">
-                                    👁️
-                                </button>
-                            </div>
-                            <div class="error-message">
-                                <span class="error-icon">!</span>
-                                This field is required
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <div class="forgot-right">
-                                <a href="forget.html" class="forgot-link">Forgot password?</a>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="login-button">Login</button>
-                        
-                        <div class="auth-footer">
-                            New Student..? Here You <a href="Registration.html">Register as Student</a>
-                        </div>
-                    </form>
-                </div>
-                
-                <!-- Employer Form -->
-                <div class="form-panel" id="employer-panel">
-                    <form id="employer-form">
-                        <div class="form-group">
-                            <label class="form-label" for="employer-email">Email</label>
-                            <input 
-                                type="email" 
-                                id="employer-email" 
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label class="form-label" for="employer-password">Password</label>
+                    <div class="password-wrapper">
+                        <input
+                                type="password"
+                                id="employer-password"
                                 class="form-input"
-                                placeholder="name@company.com"
+                                placeholder="Enter your password"
+                                minlength="8"
+                                maxlength="15"
                                 required
-                            >
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="employer-password">Password</label>
-                            <div class="password-wrapper">
-                                <input 
-                                    type="password" 
-                                    id="employer-password" 
-                                    class="form-input"
-                                    placeholder="••••••••"
-                                    required
-                                >
-                                <button type="button" class="password-toggle" onclick="togglePassword('employer-password')">
-                                    👁️
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="checkbox-row">
-                            <div class="checkbox-wrapper">
-                                <input type="checkbox" id="remember-me" class="checkbox-input">
-                                <label for="remember-me" class="checkbox-label">Remember me</label>
-                            </div>
-                            <a href="forget.html" class="forgot-link">Forgot Password?</a>
-                        </div>
-                        
-                        <button type="submit" class="login-button">Login</button>
-                        
-                        <div class="auth-footer">
-                            Don't have an account? <a href="Registration.html">Sign up</a>
-                        </div>
-                    </form>
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('employer-password')">
+                            👁️
+                        </button>
+                    </div>
+                    <div class="error-message" id="employer-password-error">
+                        <span class="error-icon">!</span>
+                        <span class="error-text">This field is required</span>
+                    </div>
                 </div>
-            </div>
+
+                <!-- Remember Me and Forgot Password -->
+                <div class="checkbox-row">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="remember-me" class="checkbox-input">
+                        <label for="remember-me" class="checkbox-label">Remember me</label>
+                    </div>
+                    <a href="forget.html" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-button">Login</button>
+
+                <!-- Sign up Link -->
+                <div class="auth-footer">
+                    Don't have an account? <a href="Registration.html">Sign up</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Bottom Footer -->
-    <div class="bottom-footer">
-        <div class="copyright">
-            © 2025 Tracker PRO. All rights reserved.
-        </div>
+<!-- Bottom Footer -->
+<div class="bottom-footer">
+    <div class="copyright">
+        © 2025 Tracker PRO. All rights reserved.
     </div>
+</div>
 
-    <script>
-        // === CONFIGURATION ===
-        const CONFIG = {
-            activeClass: 'active',
-            errorClass: 'error',
-            animationDuration: 300
-        };
+<!-- Your existing backend script (unchanged) -->
+<script>
+    // === CONFIGURATION ===
+    const CONFIG = {
+        activeClass: 'active',
+        errorClass: 'error',
+        animationDuration: 300
+    };
 
-        // === TAB MANAGEMENT ===
-        class TabManager {
-            constructor() {
-                this.tabButtons = document.querySelectorAll('.tab-button');
-                this.formPanels = document.querySelectorAll('.form-panel');
-                this.init();
-            }
-
-            init() {
-                this.tabButtons.forEach(button => {
-                    button.addEventListener('click', (e) => this.handleTabClick(e));
-                });
-            }
-
-            handleTabClick(event) {
-                const targetTab = event.target.getAttribute('data-tab');
-                this.switchTab(targetTab);
-            }
-
-            switchTab(targetTab) {
-                // Remove active from all tabs and panels
-                this.tabButtons.forEach(btn => btn.classList.remove(CONFIG.activeClass));
-                this.formPanels.forEach(panel => panel.classList.remove(CONFIG.activeClass));
-                
-                // Add active to clicked tab and corresponding panel
-                const activeButton = document.querySelector(`[data-tab="${targetTab}"]`);
-                const activePanel = document.getElementById(`${targetTab}-panel`);
-                
-                if (activeButton && activePanel) {
-                    activeButton.classList.add(CONFIG.activeClass);
-                    activePanel.classList.add(CONFIG.activeClass);
-                }
-            }
+    // === TAB MANAGEMENT (kept for compatibility) ===
+    class TabManager {
+        constructor() {
+            this.tabButtons = document.querySelectorAll('.tab-button');
+            this.formPanels = document.querySelectorAll('.form-panel');
+            this.init();
         }
 
-        // === PASSWORD UTILITY ===
-        class PasswordToggle {
-            static toggle(inputId) {
-                const input = document.getElementById(inputId);
-                const toggle = input.nextElementSibling;
-                
-                if (input && toggle) {
-                    const isPassword = input.type === 'password';
-                    input.type = isPassword ? 'text' : 'password';
-                    toggle.textContent = isPassword ? '🙈' : '👁️';
-                }
-            }
+        init() {
+            this.tabButtons.forEach(button => {
+                button.addEventListener('click', (e) => this.handleTabClick(e));
+            });
         }
 
-        // === FORM VALIDATION ===
-        class FormValidator {
-            constructor() {
-                this.forms = document.querySelectorAll('form');
-                this.init();
-            }
-
-            init() {
-                this.forms.forEach(form => {
-                    form.addEventListener('submit', (e) => this.handleSubmit(e));
-                });
-                this.initErrorRemoval();
-            }
-
-            async handleSubmit(event) {
-                event.preventDefault();
-                
-                const form = event.target;
-                const formData = new FormData(form);
-                
-                // Get form fields based on which form was submitted
-                let email, password;
-                if (form.id === 'student-form') {
-                    email = document.getElementById('student-email').value;
-                    password = document.getElementById('student-password').value;
-                } else {
-                    email = document.getElementById('employer-email').value;
-                    password = document.getElementById('employer-password').value;
-                }
-                
-                const loginData = {
-                    email: email,
-                    password: password,
-                    rememberMe: form.id === 'employer-form' ? document.getElementById('remember-me').checked : false
-                };
-
-                try {
-                    // Check if this is admin login
-                    const isAdminLogin = email === 'admin@trackerpro.com';
-                    const apiEndpoint = isAdminLogin ? '/api/auth/admin/login' : '/api/auth/login';
-                    
-                    const response = await fetch(apiEndpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(loginData)
-                    });
-
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        this.showNotification('Login successful! Redirecting...', 'success');
-                        // Store user info in sessionStorage
-                        sessionStorage.setItem('user', JSON.stringify(result.user));
-                        
-                        // Redirect based on role
-                        setTimeout(() => {
-                            if (result.user.role === 'ADMIN') {
-                                window.location.href = '/adminDashboard.html';
-                            } else {
-                                // For now, redirect to admin dashboard for all users
-                                // In future, you can create separate dashboards for each role
-                                window.location.href = '/adminDashboard.html';
-                            }
-                        }, 1500);
-                    } else {
-                        this.showNotification(result.message || 'Login failed!', 'error');
-                    }
-                } catch (error) {
-                    console.error('Login error:', error);
-                    this.showNotification('Network error. Please try again.', 'error');
-                }
-            }
-
-            initErrorRemoval() {
-                document.querySelectorAll('.form-input').forEach(input => {
-                    input.addEventListener('focus', () => this.removeError(input));
-                });
-            }
-
-            removeError(input) {
-                input.classList.remove(CONFIG.errorClass);
-                const errorMsg = input.parentElement.querySelector('.error-message');
-                if (errorMsg) {
-                    errorMsg.style.display = 'none';
-                }
-            }
-
-            showNotification(message, type = 'success') {
-                console.log(`${type.toUpperCase()}: ${message}`);
-                
-                // Create notification element
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    padding: 15px 20px;
-                    border-radius: 5px;
-                    color: white;
-                    font-weight: 500;
-                    z-index: 10000;
-                    max-width: 300px;
-                    word-wrap: break-word;
-                    ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
-                `;
-                notification.textContent = message;
-                
-                document.body.appendChild(notification);
-                
-                // Remove notification after 5 seconds
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 5000);
-            }
-
-            static validateEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
+        handleTabClick(event) {
+            const targetTab = event.target.getAttribute('data-tab');
+            this.switchTab(targetTab);
         }
 
-        // === GLOBAL FUNCTIONS (for HTML onclick) ===
-        function togglePassword(inputId) {
-            PasswordToggle.toggle(inputId);
+        switchTab(targetTab) {
+            // Remove active from all tabs and panels
+            this.tabButtons.forEach(btn => btn.classList.remove(CONFIG.activeClass));
+            this.formPanels.forEach(panel => panel.classList.remove(CONFIG.activeClass));
+
+            // Add active to clicked tab and corresponding panel
+            const activeButton = document.querySelector(`[data-tab="${targetTab}"]`);
+            const activePanel = document.getElementById(`${targetTab}-panel`);
+
+            if (activeButton && activePanel) {
+                activeButton.classList.add(CONFIG.activeClass);
+                activePanel.classList.add(CONFIG.activeClass);
+            }
+        }
+    }
+
+    // === PASSWORD UTILITY ===
+    class PasswordToggle {
+        static toggle(inputId) {
+            const input = document.getElementById(inputId);
+            const toggle = input.nextElementSibling;
+
+            if (input && toggle) {
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                toggle.textContent = isPassword ? '🙈' : '👁️';
+            }
+        }
+    }
+
+    // === FORM VALIDATION ===
+    class FormValidator {
+        constructor() {
+            this.forms = document.querySelectorAll('form');
+            this.init();
         }
 
-        // === INITIALIZATION ===
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize components
-            new TabManager();
-            new FormValidator();
-            
-            console.log('TackerPro login system initialized successfully');
-        });
+        init() {
+            this.forms.forEach(form => {
+                form.addEventListener('submit', (e) => this.handleSubmit(e));
+            });
+            this.initErrorRemoval();
+        }
 
-        // === UTILITY FUNCTIONS ===
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
+        async handleSubmit(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Get form fields based on which form was submitted
+            let email, password;
+            if (form.id === 'student-form') {
+                email = document.getElementById('student-email').value;
+                password = document.getElementById('student-password').value;
+            } else {
+                email = document.getElementById('employer-email').value;
+                password = document.getElementById('employer-password').value;
+            }
+
+            const loginData = {
+                email: email,
+                password: password,
+                rememberMe: form.id === 'employer-form' ? document.getElementById('remember-me').checked : false
             };
+
+            try {
+                // Check if this is admin login
+                const isAdminLogin = email === 'admin@trackerpro.com';
+                const apiEndpoint = isAdminLogin ? '/api/auth/admin/login' : '/api/auth/login';
+
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    this.showNotification('Login successful! Redirecting...', 'success');
+                    // Store user info in sessionStorage
+                    sessionStorage.setItem('user', JSON.stringify(result.user));
+
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (result.user.role === 'ADMIN') {
+                            window.location.href = '/adminDashboard.html';
+                        } else {
+                            window.location.href = '/adminDashboard.html';
+                        }
+                    }, 1500);
+                } else {
+                    this.showNotification(result.message || 'Login failed!', 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                this.showNotification('Network error. Please try again.', 'error');
+            }
         }
-    </script>
+
+        initErrorRemoval() {
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('focus', () => this.removeError(input));
+            });
+        }
+
+        removeError(input) {
+            input.classList.remove(CONFIG.errorClass);
+            const errorMsg = input.parentElement.querySelector('.error-message');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
+        }
+
+        showNotification(message, type = 'success') {
+            console.log(`${type.toUpperCase()}: ${message}`);
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                word-wrap: break-word;
+                ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        static validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+    }
+
+    // === GLOBAL FUNCTIONS (for HTML onclick) ===
+    function togglePassword(inputId) {
+        PasswordToggle.toggle(inputId);
+    }
+
+    // === INITIALIZATION ===
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize components
+        new TabManager();
+        new FormValidator();
+
+        console.log('TackerPro login system initialized successfully');
+    });
+
+    // === UTILITY FUNCTIONS ===
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+</script>
 </body>
 </html>
